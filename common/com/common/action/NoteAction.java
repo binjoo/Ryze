@@ -1,6 +1,7 @@
 package com.common.action;
 
-import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.pegdown.Parser;
@@ -40,6 +41,7 @@ public class NoteAction extends CoreAction {
     	NoteDao ntoeDao = new NoteDao();
 	    List list = ntoeDao.queryList(q);
 
+		out.put("parent_id", inMap.getString("parent_id"));
 		out.put("breadcrumb", ActionUtils.makeBreadcrumb("记事本"));
 		out.put("list", list);
 		out.setOutRender("/note/index");
@@ -80,7 +82,11 @@ public class NoteAction extends CoreAction {
 			return goToLogin();
 		}
 		if (isGet()) {
-			out = this.add_Get(inMap);
+			if(inMap.getString("type") != null && inMap.getString("type").equals("folder")){
+				out = this.folder_edit_Get(inMap);
+			}else{
+				out = this.add_Get(inMap);
+			}
 		} else if (isPost()) {
 			out = this.edit_Post(inMap);
 		}
@@ -93,12 +99,19 @@ public class NoteAction extends CoreAction {
 		tmp.put("user_id", getLoginInfo().getInt("id"));
 		
 		List folder = this.queryFolder(null);
-
+		if(inMap.containsKey("message")){
+			out.put("message", inMap.getString("message"));
+		}
+		tmp.put("status", 1);
 		out.put("breadcrumb", ActionUtils.makeBreadcrumb("记事本", "/note", "新建笔记"));
+		out.put("note", tmp);
+		out.put("folder_id", inMap.getInt("folder_id"));
 		out.put("folder", folder);
 		out.setOutRender("/note/edit_note");
 		return out;
 	}
+
+	//private CoreMap add_Get(CoreMap inMap) throws Exception {
 
 	public CoreMap folder_edit(CoreMap inMap) throws Exception {
 		CoreMap out = new CoreMap();
@@ -180,11 +193,18 @@ public class NoteAction extends CoreAction {
 	private CoreMap edit_Post(CoreMap inMap) throws Exception {
 		CoreMap out = new CoreMap();
 		
+		if(inMap.getString("content") == null || inMap.getString("content").equals("")){
+			out.put("message", "记事内容不能为空");
+			//out.setOutType(Constants.OUT_TYPE__REDIRECT);
+			return add_Get(out);
+		}
+		
     	CoreMap rows = new CoreMap();
     	rows.put("parent_id", inMap.getString("parent_id"));
     	rows.put("user_id", inMap.getString("user_id"));
     	rows.put("type", inMap.getString("type"));
-    	rows.put("title", inMap.getString("title"));
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+    	rows.put("title", inMap.getString("title").equals("") ? sdf.format(new Date()) : inMap.getString("title"));
     	rows.put("content", inMap.getString("content"));
     	rows.put("syntax", inMap.getString("syntax"));
     	rows.put("status", inMap.getString("status"));
@@ -225,8 +245,6 @@ public class NoteAction extends CoreAction {
 			}else{
 				out = this.folder_edit(inMap);
 			}
-		}else if(this.getParts().length == 4){
-			
 		}
 		return out;
 	}
@@ -242,22 +260,4 @@ public class NoteAction extends CoreAction {
 	    return list;
 	}
 	
-	public static void main(String[] args) {
-	    StringBuffer sb = new StringBuffer("### 你好" +
-	    		"");
-        sb.append("111|222");
-        sb.append("\n");
-        sb.append("---|---");
-        sb.append("\n");
-        sb.append("a|b");
-        sb.append("\n");
-        sb.append("c|d");
-        sb.append("\n");
-        sb.append("~~Mistaken text.~~");
-        sb.append("\n");
-        sb.append("> Pardon my french");
-        sb.append("\n");
-        sb.append("[Visit GitHub!](www.github.com)");
-        System.out.println(new PegDownProcessor(Parser.ALL).markdownToHtml(sb.toString()));
-    }
 }

@@ -38,7 +38,7 @@
     		<#else>
 	    		<tr>
 	    			<td colspan="2" class="tc">
-			    		暂时还没有记事，点击<a href="/note/add">这里</a>新增一条记事
+			    		暂时还没有记事，点击<a href="/note/add<#if (parent_id)??>${"?folder_id=${parent_id}"}</#if>">这里</a>新增一条记事
 	    			</td>
 	    		</tr>
     		</#if>

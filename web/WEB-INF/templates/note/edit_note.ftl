@@ -4,6 +4,9 @@
         <div class="col-md-9">
     		<#include "/breadcrumb.ftl">
 			<form action="/note/edit" method="post" class="form-horizontal">
+				<#if message??>
+					<div class="alert alert-warning" role="alert">${message}</div>
+				</#if>
 				<input name="id" type="hidden" value="${(note.id)?if_exists}" />
 				<div class="form-group">
 					<label for="note_title" class="col-sm-2 control-label">记事标题</label>
@@ -24,7 +27,7 @@
 							<option value="0">/</option>
 							<#if folder?exists>
 							<#list folder as row>
-						        <option value="${row.id}">${row.title}</option>
+						        <option value="${row.id}" <#if (folder_id)??>${(folder_id==row.id)?string("selected=\"selected\"","")}</#if>>${row.title}</option>
 							</#list>
 							</#if>
 						</select>

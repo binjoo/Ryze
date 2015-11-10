@@ -3,7 +3,7 @@
     <div class="row">
         <div class="col-md-8">
         	<div class="main">
-	        	<div class="topic-list-header">欢迎访问Yachal微社区</div>
+	        	<div class="topic-list-header">欢迎访问Ryze微社区</div>
 	        	<div class="topic-list">
 					<#if topics?exists>
 					<#list topics as row>
