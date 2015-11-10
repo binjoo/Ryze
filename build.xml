@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="yachal" basedir="." default="release">
+	<property file="config/build.properties" />
+	<path id="classPath">
+		<fileset dir="web/WEB-INF/lib">
+			<include name="*.jar" />
+		</fileset>
+		<fileset dir="docs/build/lib">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+	<tstamp>
+		<format property="currentTime" pattern="yyyyMMddHHmmss" offset="0" unit="minute" />
+	</tstamp>
+	<taskdef name="replaceFile" classname="com.binjoo.ant.ReplaceFileTask" classpath="release/web/WEB-INF/classes" classpathref="classPath" />
+	<typedef name="token" classname="com.binjoo.ant.ReplaceFileTag" classpath="release/web/WEB-INF/classes" classpathref="classPath" />
+	<target name="init">
+		<echo message=">>> 正在初始化..." />
+		<delete dir="release" />
+		<mkdir dir="release" />
+		<mkdir dir="release/web" />
+		<mkdir dir="release/web/WEB-INF/classes" />
+	</target>
+	<target name="compile" depends="init">
+		<echo message=">>> 正在编译Java源文件..." />
+		<javac classpathref="classPath" destdir="release/web/WEB-INF/classes" encoding="UTF-8" debug="true" deprecation="false" listfiles="off" includeAntRuntime="no" verbose="ture">
+			<src path="base" />
+			<src path="common" />
+		</javac>
+	</target>
+	<target name="merge" depends="compile">
+		<echo message=">>> 正在复制资源文件..." />
+		<copy todir="release/web/WEB-INF/lib">
+			<fileset dir="web/WEB-INF/lib">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+		<copy todir="release/web/WEB-INF/classes">
+			<fileset dir="config">
+				<include name="*.*" />
+			</fileset>
+		</copy>
+		<copy todir="release/web">
+			<fileset dir="web">
+				<include name="assets/**" />
+				<include name="WEB-INF/templates/**" />
+				<include name="WEB-INF/atemplates/**" />
+				<include name="WEB-INF/web.xml" />
+			</fileset>
+		</copy>
+	</target>
+	<target name="build-jae" depends="merge">
+		<echo message=">>> 正在修改京东云相关配置文件..." />
+		<replaceFile file="release/web/WEB-INF/classes/appConfig.properties">
+			<token reg="jdbc.url=[^\r\n]+" value="jdbc.url=${jae.url}" />
+			<token reg="jdbc.username=[^\r\n]+" value="jdbc.username=${jae.username}" />
+			<token reg="jdbc.password=[^\r\n]+" value="jdbc.password=${jae.password}" />
+		</replaceFile>
+		<war destfile="release/ROOT-jae-${currentTime}.war" compress="true">
+			<fileset dir="release/web"></fileset>
+		</war>
+	</target>
+	<target name="release">
+		<antcall target="build-jae" />
+		<echo message=">>> 正在删除临时文件..." />
+		<delete dir="release/web" />
+		<echo message=">>> ================================================================" />
+		<echo message=">>> ==                                                            ==" />
+		<echo message=">>> ==                 项目打包完成，赶快部署吧！                    ==" />
+		<echo message=">>> ==                                                            ==" />
+		<echo message=">>> ================================================================" />
+	</target>
+</project>
