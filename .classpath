@@ -29,12 +29,12 @@
 	<classpathentry kind="var" path="TOMCAT_HOME/lib/jsp-api.jar"/>
 	<classpathentry kind="var" path="TOMCAT_HOME/lib/el-api.jar"/>
 	<classpathentry kind="var" path="TOMCAT_HOME/lib/annotations-api.jar"/>
-	<classpathentry kind="lib" path="web/WEB-INF/lib/pegdown-1.5.0.jar"/>
 	<classpathentry kind="lib" path="web/WEB-INF/lib/parboiled-java-1.1.7.jar"/>
 	<classpathentry kind="lib" path="web/WEB-INF/lib/asm-5.0.3.jar"/>
 	<classpathentry kind="lib" path="web/WEB-INF/lib/asm-analysis-5.0.3.jar"/>
 	<classpathentry kind="lib" path="web/WEB-INF/lib/asm-tree-5.0.3.jar"/>
 	<classpathentry kind="lib" path="web/WEB-INF/lib/asm-util-5.0.3.jar"/>
 	<classpathentry kind="lib" path="web/WEB-INF/lib/parboiled-core-1.1.7.jar"/>
+	<classpathentry kind="lib" path="web/WEB-INF/lib/pegdown-1.6.0.jar"/>
 	<classpathentry kind="output" path="web/WEB-INF/classes"/>
 </classpath>
