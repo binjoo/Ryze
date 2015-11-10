@@ -64,7 +64,7 @@ public class NoteAction extends CoreAction {
 		q.select().from("note_content").where("id = ?", id);
 		CoreMap note = noteDao.querySingle(q);
 		if(note != null && note.getString("syntax").equals("1")){
-            String content = new PegDownProcessor().markdownToHtml(note.getString("content"));
+			String content = new PegDownProcessor(Parser.ALL).markdownToHtml(note.getString("content"));
 			note.put("content", content);
 		}
 
@@ -188,7 +188,7 @@ public class NoteAction extends CoreAction {
     	rows.put("content", inMap.getString("content"));
     	rows.put("syntax", inMap.getString("syntax"));
     	rows.put("status", inMap.getString("status"));
-    	rows.put("udpated", DateUtils.getTime());
+    	rows.put("updated", DateUtils.getTime());
     	
     	DBQuery query = new DBQuery().from("note_content");
 
@@ -208,8 +208,6 @@ public class NoteAction extends CoreAction {
     		resultId = noteDao.insert(query);
     	}
     	
-    	
-
 		out.put("breadcrumb", ActionUtils.makeBreadcrumb("记事本", "/note", "查看笔记"));
 		out.setOutType(Constants.OUT_TYPE__REDIRECT);
 		out.setOutRender("/note/" + resultId);
