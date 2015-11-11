@@ -30,8 +30,8 @@
 	    					</a>
 	    				</#if>
 	    			</td>
-	    			<td>
-	    				<#if row.type = 0>${row.created}</#if>
+	    			<td style="width:120px;text-align:right">
+	    				<#if row.type = 0>${friendly(row.created)}</#if>
 	    			</td>
 	    		</tr>
     		</#list>

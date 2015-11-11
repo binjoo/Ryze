@@ -53,7 +53,6 @@ word-break: break-all;
 }
 #content a:hover {
 color: #4d5256;
-text-decoration: underline;
 }
 #content .main,
 #content .sidebar {

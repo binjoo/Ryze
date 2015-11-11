@@ -65,13 +65,17 @@ public class NoteAction extends CoreAction {
 		DBQuery q = new DBQuery();
 		q.select().from("note_content").where("id = ?", id);
 		CoreMap note = noteDao.querySingle(q);
-		if(note != null && note.getString("syntax").equals("1")){
-			String content = new PegDownProcessor(Parser.ALL).markdownToHtml(note.getString("content"));
-			note.put("content", content);
+		if(note != null){
+			if(note.getString("syntax").equals("1")){
+				String content = new PegDownProcessor(Parser.ALL).markdownToHtml(note.getString("content"));
+				note.put("content", content);
+			}
+			out.put("note", note);
+		}else{
+			out.put("message", "对不起，找不到当前笔记。");
 		}
 
-		out.put("breadcrumb", ActionUtils.makeBreadcrumb("记事本", "/note", "查看笔记 - " + note.getString("title")));
-		out.put("note", note);
+		out.put("breadcrumb", ActionUtils.makeBreadcrumb("记事本", "/note", "查看笔记" + (note != null ? " - " + note.getString("title") : "")));
 		out.setOutRender("/note/view");
 		return out;
 	}
@@ -102,7 +106,7 @@ public class NoteAction extends CoreAction {
 		if(inMap.containsKey("message")){
 			out.put("message", inMap.getString("message"));
 		}
-		tmp.put("status", 1);
+		tmp.put("status", 0);
 		out.put("breadcrumb", ActionUtils.makeBreadcrumb("记事本", "/note", "新建笔记"));
 		out.put("note", tmp);
 		out.put("folder_id", inMap.getInt("folder_id"));
@@ -206,6 +210,7 @@ public class NoteAction extends CoreAction {
     	SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
     	rows.put("title", inMap.getString("title").equals("") ? sdf.format(new Date()) : inMap.getString("title"));
     	rows.put("content", inMap.getString("content"));
+    	rows.put("size", inMap.getString("content").getBytes("UTF-8").length);
     	rows.put("syntax", inMap.getString("syntax"));
     	rows.put("status", inMap.getString("status"));
     	rows.put("updated", DateUtils.getTime());
@@ -215,6 +220,8 @@ public class NoteAction extends CoreAction {
     	int resultId = 0;
     	if(inMap.getString("id") != null && !inMap.getString("id").equals("")){
         	rows.put("modifyed = modifyed + 1", null);
+        	rows.remove("user_id");
+        	rows.remove("type");
     		resultId = inMap.getInt("id");
     		query.rows(rows).update().where("id = ?", resultId);
         	//DBHepler.update(query.build(), query.getParams());
