@@ -1,0 +1,2 @@
+--20151111
+ALTER TABLE `note_content` ADD `size` INT(10) UNSIGNED NULL DEFAULT '0' COMMENT '文本大小' AFTER `content`;
