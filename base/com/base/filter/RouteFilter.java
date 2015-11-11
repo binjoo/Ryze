@@ -29,6 +29,7 @@ import org.apache.log4j.Logger;
 
 import com.base.action.CoreAction;
 import com.base.db.DBManager;
+import com.base.ftl.model.FriendlyDateModel;
 import com.base.utils.AppConfig;
 import com.base.utils.CharsetUtils;
 import com.base.utils.CoreMap;
@@ -179,6 +180,9 @@ public class RouteFilter implements Filter {
 						data.put("response", response);
 						data.put("session", new HttpSessionHashModel(request.getSession(), cfg.getObjectWrapper()));
 						data.put("ms", System.currentTimeMillis());
+						
+						data.put("friendly", new FriendlyDateModel());
+						
 						temp.process(data, out);
 					} catch (TemplateException e) {
 						e.printStackTrace();
