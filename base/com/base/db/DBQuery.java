@@ -273,6 +273,9 @@ public class DBQuery {
 			Object key = e.getKey();
 			Object value = e.getValue();
 			if (value == null) {
+				if(key.toString().indexOf("=") > -1){
+					set = ArrayUtils.add(set, key);
+				}
 				continue;
 			}
 			set = ArrayUtils.add(set, key + " = ?");
