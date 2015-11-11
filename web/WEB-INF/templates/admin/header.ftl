@@ -4,7 +4,7 @@
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <meta name="description" content="轻击键盘，静候回音。" />
 <meta name="keywords" content="冰剑,binjoo,wordpress,typecho,firefox,gtalk" />
-<title>Yachal Framework</title>
+<title>Ryze Control Panel</title>
 <link rel="stylesheet" type="text/css" href="/assets/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="/assets/css/common.css">
 <link rel="stylesheet" type="text/css" href="/assets/css/admin.css">
@@ -17,7 +17,7 @@
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand" href="/admin">Control Panel</a>
+            <a class="navbar-brand" href="/admin">Ryze Control Panel</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
