@@ -62,8 +62,9 @@ public class UserAction extends CoreAction {
 	public CoreMap register(CoreMap inMap) throws Exception {
 		CoreMap out = new CoreMap();
     	KVDao kvDao = new KVDao();
+    	List list = new ArrayList();
     	String site_invite = kvDao.queryKVOption("site_invite");
-		List list = new ArrayList();
+    	String site_reg_captcha = kvDao.queryKVOption("site_reg_captcha");
         if(isAjax()){
             out.setOutType(Constants.OUT_TYPE__JSON);
         }
@@ -138,12 +139,14 @@ public class UserAction extends CoreAction {
             }
             
             String captcha = inMap.getString("captcha");
-            if(captcha != null && !captcha.equals("")){
-                if(!CaptchaUtils.validate(getRequest(), getSession())){
-                    list.add("captcha#验证码不正确！");
-                }
-            }else{
-                list.add("captcha#验证码不能为空！");
+            if(site_reg_captcha.equals("1")){
+	            if(captcha != null && !captcha.equals("")){
+	                if(!CaptchaUtils.validate(getRequest(), getSession())){
+	                    list.add("captcha#验证码不正确！");
+	                }
+	            }else{
+	                list.add("captcha#验证码不能为空！");
+	            }
             }
             
             if(list.size() > 0){
@@ -171,6 +174,7 @@ public class UserAction extends CoreAction {
 	    		out.put("email", email);
 	    	}
 	    	out.put("siteInvite", site_invite);
+	    	out.put("siteRegCaptcha", site_reg_captcha);
 	    }
 	    out.setOutRender("user/register");
 	    return out;
@@ -178,11 +182,13 @@ public class UserAction extends CoreAction {
 
 	public CoreMap login(CoreMap inMap) throws Exception {
 		CoreMap out = new CoreMap();
+		KVDao kvDao = new KVDao();
 		List list = new ArrayList();
+    	String site_login_captcha = kvDao.queryKVOption("site_login_captcha");
         if(isAjax()){
             out.setOutType(Constants.OUT_TYPE__JSON);
         }
-		if (isPost()) { // 处理登陆
+		if (isPost()) { // 处理登录
 			String email = inMap.getString("email");
             if(email != null && !email.equals("")){
                 if(StrUtils.isNotEmail(email) || email.length() > 128){
@@ -199,6 +205,17 @@ public class UserAction extends CoreAction {
                 password = EncryptUtil.MD5(password, 2);
             }
             
+            String captcha = inMap.getString("captcha");
+            if(site_login_captcha.equals("1")){
+	            if(captcha != null && !captcha.equals("")){
+	                if(!CaptchaUtils.validate(getRequest(), getSession())){
+	                    list.add("captcha#验证码不正确！");
+	                }
+	            }else{
+	                list.add("captcha#验证码不能为空！");
+	            }
+            }
+            
 			if(list.size() > 0){
 				out.put("message", list);
 			}else{
@@ -211,7 +228,7 @@ public class UserAction extends CoreAction {
 					CoreMap allow = new GroupDao().queryGroup(user.getInt("group_id"));
 					getSession().setAttribute("allow", allow);
                     out.put("status", 1);
-                    out.put("message", "登陆成功！");
+                    out.put("message", "登录成功！");
 					out.setCallback(inMap.getString("callback"));
 				    return out;
 				} else {
@@ -223,6 +240,7 @@ public class UserAction extends CoreAction {
             if(inMap.getString("callback") != null){
                 out.put("callback", inMap.getString("callback"));
             }
+	    	out.put("siteLoginCaptcha", site_login_captcha);
 		}
         out.setOutRender("user/login");
 		return out;
@@ -238,7 +256,7 @@ public class UserAction extends CoreAction {
 		        out.setOutRender(goUrl);
 		    }
 		}else{
-			out.put("message", "没有登陆！");
+			out.put("message", "没有登录！");
 		}
 		return out;
 	}

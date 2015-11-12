@@ -21,8 +21,8 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <#if menu?exists>
-                <#list menu as row>
+                <#if header_menu?exists>
+                <#list header_menu as row>
                     <li${(menu_active==row.key)?string(" class=\"active\"", "")}><a href="/admin${row.url}">${row.name}</a></li>
                 </#list>
                 </#if>

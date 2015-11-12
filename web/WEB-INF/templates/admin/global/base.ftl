@@ -1,6 +1,6 @@
 <#include "/admin/header.ftl">
 <div class="col-md-10 col-md-offset-2 main">
-    <form action="/admin/global/base" method="POST">
+    <form action="/admin?action=global&method=base" method="POST">
     <div class="panel panel-default">
         <div class="panel-heading">站点信息</div>
         <div class="panel-body">

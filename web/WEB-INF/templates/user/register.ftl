@@ -30,16 +30,18 @@
                             <input name="invite" type="text" class="form-control" id="form_invite" placeholder="如果没有激活码，请向管理员索取。" />
                         </div>
                         </#if>
+                        <#if (siteRegCaptcha?exists && siteRegCaptcha = "1")>
                         <div class="form-group">
                             <label for="form_captcha">验证码：</label>
                             <div class="input-group">
-                                <span class="input-group-addon"><img class="captcha" src="/action/captcha" /></span>
+                                <span class="input-group-addon"><img name="captcha_img" class="captcha" src="/action/captcha" /></span>
                                 <input name="captcha" type="text" class="form-control" placeholder="验证码">
                             </div>
                         </div>
+                        </#if>
                         <div class="form-group">
                             <button name="form-submit" data-loading-text="注册中..." type="button" class="btn btn-primary">注册</button>
-                            <a class="btn btn-default" href="/user/login" role="button">登陆</a>
+                            <a class="btn btn-default" href="/user/login" role="button">已有账号，立即登录</a>
                             <a href="/user/reset" class="btn btn-link">忘记密码？</a>
                         </div>
                     </form>

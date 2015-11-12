@@ -22,7 +22,7 @@
                         </div>
                         <div class="form-group">
                             <button name="form-submit" data-loading-text="发送邮件中..." type="button" class="btn btn-primary">发送找回密码邮件</button>
-                            <a href="/user/login" class="btn btn-link">返回登陆</a>
+                            <a href="/user/login" class="btn btn-link">返回登录</a>
                         </div>
                     </form>
                 </div>

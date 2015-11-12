@@ -39,70 +39,74 @@ public class AdminAction extends CoreAction {
         	out.setOutRender("/");
         	return out;
         }
-        String[] caa = getClassAndAction();
+        //初始化菜单栏参数
+        inMap = getActionAndMethod(inMap);
+        out = execute(inMap);
 
-        out = execute(caa);
-//        if(out.getOutType() != null && out.getOutType().equals(Constants.OUT_TYPE__REDIRECT)){
-//        	out.setOutRender("/admin" + out.getOutRender());
-//        }
-
-        out.putAll(getMenu(caa));
+        out.putAll(getMenu(inMap));
         return out;
     }
-
     public CoreMap notFound(CoreMap inMap) throws Exception {
         return index(inMap);
     }
 
     public CoreMap gotoUrl(CoreMap inMap) throws Exception {
         CoreMap out = new CoreMap();
-        String url = inMap.getString("url");
-        if(url.indexOf("/admin/") != -1){
-        	url = url.substring(url.indexOf("admin") + 6, url.length());
-        	String[] menu = url.split("/");
-        	out.putAll(getMenu(menu));
+        String action = inMap.getString("action");
+        String method = inMap.getString("method");
+        if(action != null && method != null){
+        	out.putAll(getMenu(inMap));
+        }else{
+        	action = MenuConfig.DEFAULT_HEADER_MENU_KEY;
+        	method = MenuConfig.DEFAULT_SIDEBAR_MENU_KEY;
         }
-        out.put("url", inMap.getString("url"));
+        
+        out.put("url", "/admin?action=" + action + "&method=" + method);
 		out.setOutRender("/admin/goto");
         return out;
     }
 
-    private String[] getClassAndAction() {
-        String top = "global";
-        String sidebar = "index";
-
-        if (getParts().length >= 2 && MenuConfig.isExists(getParts()[1])) {
-            top = getParts()[1];
+    /**
+     * 获得菜单栏参数，初始化默认值
+     * @param inMap
+     * @return
+     */
+    private CoreMap getActionAndMethod(CoreMap inMap) throws Exception {
+        String actionName = inMap.getString("action") != null ? inMap.getString("action") : "global";
+        String methodName = null;
+        if(MenuConfig.isExists(actionName)){
+        	methodName = inMap.getString("method") != null ? inMap.getString("method") : ((CoreMap) MenuConfig.get(actionName).get(0)).getString("key");
+        }else{
+        	actionName = MenuConfig.DEFAULT_HEADER_MENU_KEY;
+        	methodName = MenuConfig.DEFAULT_SIDEBAR_MENU_KEY;
         }
-
-        if (getParts().length >= 3) {
-            sidebar = getParts()[2];
-        } else {
-            List list = (List) MenuConfig.get(top).get(0);
-            CoreMap map = (CoreMap) list.get(0);
-            sidebar = map.getString("key");
-        }
-        return new String[] { top, sidebar };
+        inMap.put("action", actionName);
+        inMap.put("method", methodName);
+        return inMap;
     }
 
-    private CoreMap getMenu(String[] caa) {
+    private CoreMap getMenu(CoreMap inMap) throws Exception  {
         CoreMap out = new CoreMap();
-        out.put("menu_active", caa[0]);
-        out.put("sidebar_active", caa[1]);
-        out.put("menu", MenuConfig.getAll());
-        out.put("sidebar_menu", MenuConfig.get(caa[0]));
+        String actionName = inMap.getString("action");
+        String methodName = inMap.getString("method");
+        
+        out.put("menu_active", actionName);
+        out.put("sidebar_active", methodName);
+        out.put("header_menu", MenuConfig.getAll());
+        out.put("sidebar_menu", MenuConfig.get(actionName));
         return out;
     }
-
+    
     /**
      * 从Admin源码包里查找Class和Action
      * @param Class And Action
      * @return
      */
-    private CoreMap execute(String[] caa) throws Exception  {
+    private CoreMap execute(CoreMap inMap) throws Exception  {
         CoreMap out = new CoreMap();
-        String actionName = caa[0];
-        String methodName = caa[1];
+        String actionName = inMap.getString("action");
+        String methodName = inMap.getString("method");
+
         CoreAction action = (CoreAction) actions.get(actionName);
         String cls = "com.admin.action." + StringUtils.capitalize(actionName) + "Action";
         
@@ -119,7 +123,7 @@ public class AdminAction extends CoreAction {
                 throw new Exception("Class Not Found " + cls);
             }
         }
-
+        
         action.setAction(getAction());
         action.setParts(getParts());
         action.setRequest(getRequest());
@@ -142,8 +146,6 @@ public class AdminAction extends CoreAction {
             }
         }
 
-        CoreMap inMap = RequestUtils.getInMap(getRequest());
-        inMap.put("parts", getParts());
         out =  (CoreMap) method.invoke(action, inMap);
         
         return out;

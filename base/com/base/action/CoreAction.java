@@ -127,7 +127,7 @@ public abstract class CoreAction {
     }
 
     /**
-     * 用户是否登陆状态
+     * 用户是否登录状态
      * 
      * @return
      */
@@ -158,7 +158,7 @@ public abstract class CoreAction {
 	}
 
     /**
-     * 返回登陆用户信息
+     * 返回登录用户信息
      * 
      * @return
      */
@@ -170,7 +170,7 @@ public abstract class CoreAction {
     }
 
     /**
-     * 跳转到登陆页面。
+     * 跳转到登录页面。
      * 
      * @return
      */

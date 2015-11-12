@@ -256,6 +256,11 @@ public class DBQuery {
 		StringBuffer out = new StringBuffer("delete from ");
 		out.append(this.table);
 		out.append(this.where);
+		if (this.wheres.length > 0) {
+			for (int i = 0; i < this.wheres.length; i++) {
+				this.params = ArrayUtils.add(this.params, this.wheres[i]);
+			}
+		}
 		return out.toString();
 	}
 

@@ -4,7 +4,7 @@
         <div class="col-md-6 col-md-offset-3">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <h3 class="panel-title">登陆</h3>
+                    <h3 class="panel-title">登录</h3>
                 </div>
                 <div class="panel-body">
                     <form action="/user/login" method="POST">
@@ -17,9 +17,18 @@
                             <label for="form_password">密码：</label>
                             <input name="password" value="123123" type="password" class="form-control" id="form_password" placeholder="********" />
                         </div>
+                        <#if (siteLoginCaptcha?exists && siteLoginCaptcha = "1")>
                         <div class="form-group">
-                            <button name="form-submit" data-loading-text="登陆中..." type="button" class="btn btn-primary">登陆</button>
-                            <a class="btn btn-default" href="/user/register" role="button">注册</a>
+                            <label for="form_captcha">验证码：</label>
+                            <div class="input-group">
+                                <span class="input-group-addon"><img name="captcha_img" class="captcha" src="/action/captcha" /></span>
+                                <input name="captcha" type="text" class="form-control" placeholder="验证码">
+                            </div>
+                        </div>
+                        </#if>
+                        <div class="form-group">
+                            <button name="form-submit" data-loading-text="登录中..." type="button" class="btn btn-primary">登录</button>
+                            <a class="btn btn-default" href="/user/register" role="button">没有帐号？立即注册</a>
                             <a href="/user/reset" class="btn btn-link">忘记密码？</a>
                         </div>
                     </form>
