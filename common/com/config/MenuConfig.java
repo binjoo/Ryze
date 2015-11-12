@@ -7,104 +7,95 @@ import com.base.utils.CoreMap;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class MenuConfig {
-    public final static List menuList = new ArrayList();
-    public final static CoreMap menuMap = new CoreMap();
+	private final static int TYPE_HEADER_MENU = 0x01;
+	private final static int TYPE_SIDEBAR_MENU = 0x02;
+	private final static int TYPE_SIDEBAR_MENU_HR = 0x03;
+	
+    public final static List headerMenuList = new ArrayList();
+    public final static CoreMap sidebarMenuMap = new CoreMap();
+
+    private static List tmpMenuList = new ArrayList();
     
     static {
-        menuList.add(add("global", "全局", "/global"));
-        menuMap.put("global", initGlobal("/global"));
+        tmpMenuList.add(addHeaderMenu("global", "全局"));
+        tmpMenuList.add(addSidebarMenu("index", "后台首页", "global"));
+        tmpMenuList.add(addSidebarMenu("base", "站点信息", "global"));
+        tmpMenuList.add(addSidebarMenu("access", "注册控制", "global"));
+        tmpMenuList.add(addSidebarMenu("qiniu", "七牛云存储", "global"));
+        tmpMenuList.add(addSidebarMenuHr("global"));
+        tmpMenuList.add(addSidebarMenu("email", "邮件服务", "global"));
         
-        menuList.add(add("user", "用户", "/user"));
-        menuMap.put("user", initUser("/user"));
+        tmpMenuList.add(addHeaderMenu("user", "用户"));
+        tmpMenuList.add(addSidebarMenu("manage", "用户管理", "user"));
+        tmpMenuList.add(addSidebarMenu("group", "用户组", "user"));
+        tmpMenuList.add(addSidebarMenuHr("user"));
+        tmpMenuList.add(addSidebarMenu("sendmsg", "发送通知", "user"));
+        tmpMenuList.add(addSidebarMenuHr("user"));
+        tmpMenuList.add(addSidebarMenu("ipblack", "用户黑名单", "user"));
+        tmpMenuList.add(addSidebarMenu("userblack", "IP黑名单", "user"));
         
-        menuList.add(add("extend", "论坛", "/forum"));
-        menuMap.put("forum", initForum("/forum"));
-        
-        menuList.add(add("wechat", "微信", "/wechat"));
-        menuMap.put("wechat", initWechat("/wechat"));
-        
-        menuList.add(add("extend", "运营", "/extend"));
-        menuMap.put("extend", initExtend("/extend"));
+        tmpMenuList.add(addHeaderMenu("forum", "论坛"));
+        tmpMenuList.add(addSidebarMenu("node", "节点管理", "forum"));
+        tmpMenuList.add(addSidebarMenu("topic", "主题管理", "forum"));
+        tmpMenuList.add(addSidebarMenu("recycle", "回收站", "forum"));
+    	initMenu();	//开始初始化后台菜单
     }
     
-    private static List initGlobal(String prefix){
-        List tmp = new ArrayList();
-        
-        List tmp_a = new ArrayList();
-        tmp_a.add(add("index", "后台首页", prefix + "/index"));
-        tmp_a.add(add("base", "站点信息", prefix + "/base"));
-        tmp_a.add(add("access", "注册控制", prefix + "/access"));
-        tmp_a.add(add("qiniu", "七牛云存储", prefix + "/qiniu"));
-        tmp.add(tmp_a);
-        
-        List tmp_b = new ArrayList();
-        tmp_b = new ArrayList();
-        tmp_b.add(add("email", "邮件服务", prefix + "/email"));
-        tmp.add(tmp_b);
-        
-        return tmp;
+    private static void initMenu(){
+    	for (int i = 0; i < tmpMenuList.size(); i++) {
+			CoreMap tmpMenu = (CoreMap) tmpMenuList.get(i);
+			String key = tmpMenu.getString("key");
+			String action = tmpMenu.getString("action");
+			int type = tmpMenu.getInt("type");
+			if(type == TYPE_HEADER_MENU){
+				headerMenuList.add(tmpMenu);
+			}else{
+				List tmpSidebar = new ArrayList();
+				if(sidebarMenuMap.containsKey(action)){
+					tmpSidebar = sidebarMenuMap.getList(action);
+				}
+				if(type == TYPE_SIDEBAR_MENU){
+					tmpSidebar.add(tmpMenu);
+				}else{
+					tmpSidebar.add(null);
+				}
+				sidebarMenuMap.put(action, tmpSidebar);
+			}
+		}
     }
-
-	private static Object initForum(String prefix) {
-        List tmp = new ArrayList();
-
-        List tmp_a = new ArrayList();
-        tmp_a.add(add("node", "节点管理", prefix + "/node"));
-        tmp_a.add(add("topic", "主题管理", prefix + "/topic"));
-        tmp_a.add(add("recycle", "回收站", prefix + "/recycle"));
-        tmp.add(tmp_a);
-		return tmp;
-	}
-
-	private static Object initUser(String prefix) {
-        List tmp = new ArrayList();
-
-        List tmp_a = new ArrayList();
-        tmp_a.add(add("manage", "用户管理", prefix + "/manage"));
-        tmp_a.add(add("group", "用户组", prefix + "/group"));
-        tmp.add(tmp_a);
-        
-        List tmp_b = new ArrayList();
-        tmp_b.add(add("sendmsg", "发送通知", prefix + "/sendmsg"));
-        tmp.add(tmp_b);
-        
-        List tmp_c = new ArrayList();
-        tmp_c.add(add("ipblack", "用户黑名单", prefix + "/ipblack"));
-        tmp_c.add(add("userblack", "IP黑名单", prefix + "/userblack"));
-        tmp.add(tmp_c);
-		return tmp;
-	}
-
-    private static Object initWechat(String prefix) {
-        List tmp = new ArrayList();
-
-        List tmp_a = new ArrayList();
-        tmp_a.add(add("base", "基础设置", prefix + "/base"));
-        tmp_a.add(add("third", "第三方平台", prefix + "/third"));
-        tmp.add(tmp_a);
-		return tmp;
-	}
-
-	private static Object initExtend(String prefix) {
-        List tmp = new ArrayList();
-
-        List tmp_a = new ArrayList();
-        tmp_a.add(add("invite", "邀请码", prefix + "/invite"));
-        tmp.add(tmp_a);
-		return tmp;
-	}
-
-
-	private static CoreMap add(String key, String nane, String url) {
+    
+	private static CoreMap addHeaderMenu(String key, String name) {
+        return addHeaderMenu(key, name, key);
+    }
+	private static CoreMap addHeaderMenu(String key, String name, String action) {
         CoreMap menu = new CoreMap();
+        menu.put("type", TYPE_HEADER_MENU);
         menu.put("key", key);
-        menu.put("name", nane);
-        menu.put("url", url);
+        menu.put("name", name);
+        menu.put("url", "?action=" + action);
         return menu;
     }
+	private static CoreMap addSidebarMenu(String key, String name, String action) {
+		return addSidebarMenu(key, name, action, key);
+	}
+	private static CoreMap addSidebarMenu(String key, String name, String action, String method) {
+        CoreMap menu = new CoreMap();
+        menu.put("type", TYPE_SIDEBAR_MENU);
+        menu.put("key", key);
+        menu.put("name", name);
+        menu.put("action", action);
+        menu.put("url", "?action=" + action + "&method=" + method);
+        return menu;
+    }
+	private static CoreMap addSidebarMenuHr(String action) {
+        CoreMap menu = new CoreMap();
+        menu.put("type", TYPE_SIDEBAR_MENU_HR);
+        menu.put("action", action);
+		return menu;
+	}
     
     public static boolean isExists(String key){
-        if(menuMap.containsKey(key)){
+        if(sidebarMenuMap.containsKey(key)){
             return true;
         }else{
             return false;
@@ -112,10 +103,10 @@ public class MenuConfig {
     }
 
     public static List get(String key) {
-        return menuMap.getList(key);
+        return sidebarMenuMap.getList(key);
     }
 
     public static List getAll() {
-        return menuList;
+        return headerMenuList;
     }
 }
