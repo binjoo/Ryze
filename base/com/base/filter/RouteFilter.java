@@ -129,8 +129,6 @@ public class RouteFilter implements Filter {
 				parts = new String[] { "action" };
 			}
 
-			//this.cfg = templates.get("view");
-
 			CoreAction action = (CoreAction) this.loadAction(parts[0]);
 
 			if (action == null) {

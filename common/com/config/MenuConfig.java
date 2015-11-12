@@ -14,6 +14,9 @@ public class MenuConfig {
     public final static List headerMenuList = new ArrayList();
     public final static CoreMap sidebarMenuMap = new CoreMap();
 
+    public final static String DEFAULT_HEADER_MENU_KEY = "global";
+    public final static String DEFAULT_SIDEBAR_MENU_KEY = "index";
+
     private static List tmpMenuList = new ArrayList();
     
     static {

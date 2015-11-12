@@ -103,7 +103,7 @@ public class GlobalAction extends CoreAction {
 		od.updateMap(options);
 		
 		out.setOutType(Constants.OUT_TYPE__REDIRECT);
-		out.setOutRender("/admin/gotoUrl?url=/admin/global/access");
+		out.setOutRender("/admin/gotoUrl?url=global/access");
 		return out;
 	}
 	

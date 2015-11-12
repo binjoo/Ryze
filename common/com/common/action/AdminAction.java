@@ -53,12 +53,20 @@ public class AdminAction extends CoreAction {
     public CoreMap gotoUrl(CoreMap inMap) throws Exception {
         CoreMap out = new CoreMap();
         String url = inMap.getString("url");
-        if(url.indexOf("/admin/") != -1){
-        	url = url.substring(url.indexOf("admin") + 6, url.length());
+        String action = null;
+        String method = null;
+        if(url.indexOf("/") != -1){
         	String[] menu = url.split("/");
+        	action = menu[0];
+        	method = menu[1];
+        	inMap.put("action", menu[0]);
+        	inMap.put("method", menu[1]);
         	out.putAll(getMenu(inMap));
+        }else{
+        	action = MenuConfig.DEFAULT_HEADER_MENU_KEY;
+        	method = MenuConfig.DEFAULT_SIDEBAR_MENU_KEY;
         }
-        out.put("url", inMap.getString("url"));
+        out.put("url", "/admin?action=");
 		out.setOutRender("/admin/goto");
         return out;
     }
@@ -68,16 +76,21 @@ public class AdminAction extends CoreAction {
      * @param inMap
      * @return
      */
-    private CoreMap getActionAndMethod(CoreMap inMap){
+    private CoreMap getActionAndMethod(CoreMap inMap) throws Exception {
         String actionName = inMap.getString("action") != null ? inMap.getString("action") : "global";
-        String methodName = inMap.getString("method") != null ? inMap.getString("method") : ((CoreMap) MenuConfig.get(actionName).get(0)).getString("key");
+        String methodName = null;
+        if(MenuConfig.isExists(actionName)){
+        	methodName = inMap.getString("method") != null ? inMap.getString("method") : ((CoreMap) MenuConfig.get(actionName).get(0)).getString("key");
+        }else{
+        	actionName = MenuConfig.DEFAULT_HEADER_MENU_KEY;
+        	methodName = MenuConfig.DEFAULT_SIDEBAR_MENU_KEY;
+        }
         inMap.put("action", actionName);
         inMap.put("method", methodName);
         return inMap;
     }
-    
 
-    private CoreMap getMenu(CoreMap inMap) {
+    private CoreMap getMenu(CoreMap inMap) throws Exception  {
         CoreMap out = new CoreMap();
         String actionName = inMap.getString("action");
         String methodName = inMap.getString("method");
