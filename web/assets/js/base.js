@@ -96,9 +96,13 @@ common.submit = function(){
 			Utils.showPromptAjax(data.message);
 			$btn.button('reset');
 		}
+		$("img[name=captcha_img]").attr("src", "/action/captcha?" + Math.random());
 	})
 }
-
+common.captcha = function(){
+	$(this).attr("src", "/action/captcha?" + Math.random());
+}
 $(document).ready(function() {
 	$("button[name=form-submit]").click(common.submit);
+	$("img[name=captcha_img]").click(common.captcha);
 });

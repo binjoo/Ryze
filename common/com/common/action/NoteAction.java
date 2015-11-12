@@ -37,7 +37,7 @@ public class NoteAction extends CoreAction {
 	    	q.where("parent_id = ?", "0");
 		}
     	q.where("user_id = ?", this.getLoginInfo().getString("id"));
-    	q.order("type", DBQuery.SORT_DESC).order("created", DBQuery.SORT_ASC);
+    	q.order("type", DBQuery.SORT_DESC).order("created", DBQuery.SORT_DESC);
     	NoteDao ntoeDao = new NoteDao();
 	    List list = ntoeDao.queryList(q);
 
@@ -75,7 +75,7 @@ public class NoteAction extends CoreAction {
 			out.put("message", "对不起，找不到当前笔记。");
 		}
 
-		out.put("breadcrumb", ActionUtils.makeBreadcrumb("记事本", "/note", "查看笔记" + (note != null ? " - " + note.getString("title") : "")));
+		out.put("breadcrumb", ActionUtils.makeBreadcrumb("记事本", "/note", "查看笔记"));
 		out.setOutRender("/note/view");
 		return out;
 	}
@@ -265,6 +265,31 @@ public class NoteAction extends CoreAction {
     	GroupDao gd = new GroupDao();
 	    List list = gd.queryList(q);
 	    return list;
+	}
+
+	public CoreMap delete(CoreMap inMap) throws Exception {
+		CoreMap out = new CoreMap();
+		if (!isLogin()) {
+			return goToLogin();
+		}
+		String id = getParts()[2];
+		DBQuery q = new DBQuery();
+		q.select().from("note_content").where("id = ?", id);
+		CoreMap note = noteDao.querySingle(q);
+		if(note != null){
+			int loginId = getLoginInfo().getInt("id");
+			int userId = note.getInt("user_id");
+			if(loginId == userId){
+				DBQuery d = new DBQuery();
+				d.delete().from("note_content").where("id = ?", id);
+				int result = noteDao.update(d);
+				if(result >= 1){
+					out.setOutType(Constants.OUT_TYPE__REDIRECT);
+					out.setOutRender("/note");
+				}
+			}
+		}
+		return out;
 	}
 	
 }

@@ -52,21 +52,16 @@ public class AdminAction extends CoreAction {
 
     public CoreMap gotoUrl(CoreMap inMap) throws Exception {
         CoreMap out = new CoreMap();
-        String url = inMap.getString("url");
-        String action = null;
-        String method = null;
-        if(url.indexOf("/") != -1){
-        	String[] menu = url.split("/");
-        	action = menu[0];
-        	method = menu[1];
-        	inMap.put("action", menu[0]);
-        	inMap.put("method", menu[1]);
+        String action = inMap.getString("action");
+        String method = inMap.getString("method");
+        if(action != null && method != null){
         	out.putAll(getMenu(inMap));
         }else{
         	action = MenuConfig.DEFAULT_HEADER_MENU_KEY;
         	method = MenuConfig.DEFAULT_SIDEBAR_MENU_KEY;
         }
-        out.put("url", "/admin?action=");
+        
+        out.put("url", "/admin?action=" + action + "&method=" + method);
 		out.setOutRender("/admin/goto");
         return out;
     }

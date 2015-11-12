@@ -70,7 +70,7 @@ public class GlobalAction extends CoreAction {
 		od.updateMap(options);
 		
 		out.setOutType(Constants.OUT_TYPE__REDIRECT);
-		out.setOutRender("/admin/gotoUrl?url=/admin/global/base");
+		out.setOutRender("/admin/gotoUrl?action=global&method=base");
 		return out;
 	}
 	
@@ -98,12 +98,14 @@ public class GlobalAction extends CoreAction {
 		CoreMap options = new CoreMap();
 		options.put("site_register", inMap.getString("site_register"));
 		options.put("site_invite", inMap.getString("site_invite"));
+		options.put("site_reg_captcha", inMap.getString("site_reg_captcha"));
+		options.put("site_login_captcha", inMap.getString("site_login_captcha"));
 
 		KVDao od = new KVDao();
 		od.updateMap(options);
 		
 		out.setOutType(Constants.OUT_TYPE__REDIRECT);
-		out.setOutRender("/admin/gotoUrl?url=global/access");
+		out.setOutRender("/admin/gotoUrl?action=global&method=access");
 		return out;
 	}
 	

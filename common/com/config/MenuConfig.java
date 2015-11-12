@@ -23,7 +23,7 @@ public class MenuConfig {
         tmpMenuList.add(addHeaderMenu("global", "全局"));
         tmpMenuList.add(addSidebarMenu("index", "后台首页", "global"));
         tmpMenuList.add(addSidebarMenu("base", "站点信息", "global"));
-        tmpMenuList.add(addSidebarMenu("access", "注册控制", "global"));
+        tmpMenuList.add(addSidebarMenu("access", "注册登录控制", "global"));
         tmpMenuList.add(addSidebarMenu("qiniu", "七牛云存储", "global"));
         tmpMenuList.add(addSidebarMenuHr("global"));
         tmpMenuList.add(addSidebarMenu("email", "邮件服务", "global"));

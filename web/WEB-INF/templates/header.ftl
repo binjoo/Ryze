@@ -26,7 +26,7 @@
                 </div>
                 <div class="header-control col-md-6 text-right">
                 <#if session.login?exists>
-                	当前登陆：<a href="/user/${session.login.id}">${session.login.nickname?if_exists} <span class="caret"></span></a>
+                	当前登录：<a href="/user/${session.login.id}">${session.login.nickname?if_exists} <span class="caret"></span></a>
                     [
                     <a class="message" href="/user/message">消息<span class="badge">7</span></a>
                     |
@@ -35,7 +35,7 @@
                 <#else>
                 	当前访客身份：游客
                     [
-                    <a href="/user/login">登陆</a>
+                    <a href="/user/login">登录</a>
                     |
                     <a href="/user/register">注册</a>
                     ]

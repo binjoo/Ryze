@@ -12,7 +12,7 @@
                         <input type="hidden" name="email" value="${email?if_exists}" />
                         <input type="hidden" name="token" value="${token?if_exists}" />
                         <div class="form-group">
-                            <label for="form_password">新的登陆密码：</label>
+                            <label for="form_password">新的登录密码：</label>
                             <input name="password" type="text" class="form-control" id="form_password" placeholder="********" />
                         </div>
                         <div class="form-group">
