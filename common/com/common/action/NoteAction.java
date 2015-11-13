@@ -18,7 +18,7 @@ import com.common.dao.BookmarkDao;
 import com.common.dao.GroupDao;
 import com.common.dao.NoteDao;
 
-@SuppressWarnings("rawtypes")
+@SuppressWarnings({"unchecked", "rawtypes"})
 public class NoteAction extends CoreAction {
 	NoteDao noteDao = new NoteDao();
 
@@ -114,8 +114,6 @@ public class NoteAction extends CoreAction {
 		out.setOutRender("/note/edit_note");
 		return out;
 	}
-
-	//private CoreMap add_Get(CoreMap inMap) throws Exception {
 
 	public CoreMap folder_edit(CoreMap inMap) throws Exception {
 		CoreMap out = new CoreMap();
