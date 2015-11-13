@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings({ "unchecked", "rawtypes", "serial" })
-public class CoreMap extends HashMap implements Serializable {
+public class CoreMap<K,V> extends HashMap<K,V> implements Serializable {
 	private String outType;
 	private String outRender;
 	private String callback;
@@ -52,12 +52,11 @@ public class CoreMap extends HashMap implements Serializable {
 		}
 	}
 
-	public Object put(Object key, Object value) {
-		String k = String.valueOf(key);
-		return super.put(k, value);
+	public V put(K key, V value) {
+		return super.put(key, value);
 	}
 
-	public Object get(Object key) {
+	public V get(Object key) {
 		return super.get(key);
 	}
 
