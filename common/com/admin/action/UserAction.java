@@ -18,10 +18,7 @@ public class UserAction extends CoreAction {
 
 	public CoreMap manage(CoreMap inMap) throws Exception {
 	    CoreMap out = new CoreMap();
-	    int page = 1;	//当前页数
-	    if(getParts().length >= 4){
-	    	page = Integer.parseInt(getParts()[3]);
-	    }
+	    int page = inMap.getInt("page", 1);	//当前页数
 	    UserDao ud = new UserDao();
 	    inMap.put("page", page);
 	    inMap.put("size", 10);
@@ -40,7 +37,7 @@ public class UserAction extends CoreAction {
         q.order("id", DBQuery.SORT_ASC);
 	    List list = ud.queryList(q);
 	    out.put("users", list);
-
+	    
 	    long count = DBHepler.stat(q.buildCount(), q.getParams());	//结果总数
 	    out.put("count", count);
 	    out.put("page", inMap.getInt("page"));

@@ -1,9 +1,8 @@
 <#include "/admin/header.ftl">
 <div class="col-md-10 col-md-offset-2 main">
 <div class="panel panel-default">
-	<div class="panel-heading">Panel heading</div>
 	<div class="panel-body">
-	<form class="form-inline" action="/admin/user/manage" method="POST" role="form">
+	<form class="form-inline" action="/admin?action=user&method=manage" method="POST" role="form">
 		<div class="form-group">
 			<div class="input-group">
 	  			<span class="input-group-addon">昵称</span>
@@ -38,7 +37,7 @@
       </tbody>
 	</table>
 	<#import "/ftl/page.ftl" as p>
-	<@p.box page=page size=size count=count url="/admin/user/manage/?"/>
+	<@p.box page=page size=size count=count url="/admin?action=user&method=manage&page={?}"/>
 </div>
 </div>
 <#include "/admin/footer.ftl">

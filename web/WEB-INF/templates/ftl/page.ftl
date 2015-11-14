@@ -18,14 +18,11 @@
     </#if>
 	<nav class="tc">
 	  <ul class="pagination pagination-sm">
-	    <li><a href="${url?replace("?", 1)}">&laquo;</a></li>
+	    <li><a href="${url?replace("{?}", 1)}">&laquo;</a></li>
 	    <#list start..end as i>
-		    <li${(i == page)?string(" class=\"active\"", "")}><a href="${url?replace("?", i)}">${i}</a></li>
+		    <li${(i == page)?string(" class=\"active\"", "")}><a href="${url?replace("{?}", i)}">${i}</a></li>
 	    </#list>
-	    <li><a href="${url?replace("?", pageCount)}">&raquo;</a></li>
+	    <li><a href="${url?replace("{?}", pageCount)}">&raquo;</a></li>
 	  </ul>
 	</nav>
-</#macro>
-<#macro classic date>
-<p>classic ${date} Julia Smith. All rights reserved.</p>
 </#macro>

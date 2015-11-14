@@ -6,7 +6,7 @@
         <div class="panel-body">
             <div class="form-group">
                 <label for="site_title">站点名称</label>
-                <input type="text" class="form-control" name="site_title" placeholder="Yachal Framework" value="${site_title?if_exists}" />
+                <input type="text" class="form-control" name="site_title" placeholder="Ryze Framework" value="${site_title?if_exists}" />
             </div>
             <div class="form-group">
                 <label for="site_description">站点描述</label>

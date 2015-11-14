@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="yachal" basedir="." default="release">
+<project name="ryze" basedir="." default="release">
 	<property file="config/build.properties" />
 	<path id="classPath">
 		<fileset dir="web/WEB-INF/lib">

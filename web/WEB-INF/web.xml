@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app>
-	<display-name>Yachal - My Java Frameword</display-name>
+	<display-name>Ryze - My Java Frameword</display-name>
 	<filter>
 		<filter-name>global</filter-name>
 		<filter-class>com.base.filter.RouteFilter</filter-class>

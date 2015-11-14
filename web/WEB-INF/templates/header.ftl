@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="轻击键盘，静候回音。" />
 <meta name="keywords" content="冰剑,binjoo,wordpress,typecho,firefox,gtalk" />
-<title>Ychal Framework</title>
+<title>Ryze</title>
 <link rel="stylesheet" type="text/css" href="/assets/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="/assets/css/common.css">
 <link rel="stylesheet" type="text/css" href="/assets/css/style.css">

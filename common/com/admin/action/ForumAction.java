@@ -9,10 +9,22 @@ import com.base.utils.CoreMap;
 import com.common.dao.NodeDao;
 import com.common.dao.UserDao;
 
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class ForumAction extends CoreAction {
 	public CoreMap index(CoreMap inMap) throws Exception {
 		CoreMap out = new CoreMap();
 		System.out.println("user index");
+		return out;
+	}
+	
+	public CoreMap editNode (CoreMap inMap) throws Exception {
+		CoreMap out = new CoreMap();
+		if(isGet()){
+			out.setOutRender("/admin/forum/node_edit");
+		}else if(isPost()){
+			
+		}
+		out.put("sidebar_active", "node");
 		return out;
 	}
 
@@ -23,7 +35,7 @@ public class ForumAction extends CoreAction {
 		q.select().from("forum_node").order("created", DBQuery.SORT_DESC);
 		List list = nodeDao.queryList(q);
 	    out.put("nodes", list);
-		out.setOutRender("/admin/forum/node");
+		out.setOutRender("/admin/forum/node_list");
 		return out;
 	}
 
