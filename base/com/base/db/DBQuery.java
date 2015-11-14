@@ -299,22 +299,37 @@ public class DBQuery {
 	}
 
 	/**
-	 * 生成查询SQL
+	 * 生成数量统计SQL语句
 	 * 
 	 * @return
 	 */
-	private String buildSelect() {
-		return buildSelect(false);
+	public String buildCount() {
+		this.params = new Object[0];
+		StringBuffer out = new StringBuffer("select count(*) as stat from ( select ");
+		String _table = this.table;
+		out.append(this.fields + " from ");
+		if (this.join.size() > 0) {
+			for (int i = 0; i < this.join.size(); i++) {
+				String[] join = this.join.get(i);
+				_table += " " + join[2] + " join " + join[0] + " on " + join[1];
+			}
+		}
+		out.append(_table);
+		out.append(this.where);
+		if (this.wheres.length > 0) {
+			for (int i = 0; i < this.wheres.length; i++) {
+				this.params = ArrayUtils.add(this.params, this.wheres[i]);
+			}
+		}
+		out.append(this.group);
+		out.append(" ) t");
+		return out.toString();
 	}
 
-	private String buildSelect(boolean count) {
+	private String buildSelect() {
 		StringBuffer out = new StringBuffer("select ");
 		String _table = this.table;
-		if (count) {
-			out.append("count(*) as stat from ");
-		} else {
-			out.append(this.fields + " from ");
-		}
+		out.append(this.fields + " from ");
 		if (this.join.size() > 0) {
 			for (int i = 0; i < this.join.size(); i++) {
 				String[] join = this.join.get(i);
@@ -330,10 +345,8 @@ public class DBQuery {
 		}
 		out.append(this.group);
 		out.append(this.order);
-		if (!count) {
-			out.append(this.limit);
-			out.append(this.offset);
-		}
+		out.append(this.limit);
+		out.append(this.offset);
 		return out.toString();
 	}
 
@@ -362,15 +375,6 @@ public class DBQuery {
 			break;
 		}
 		return this.sql;
-	}
-
-	/**
-	 * 生成数量统计SQL语句
-	 * 
-	 * @return
-	 */
-	public String buildCount() {
-		return buildSelect(true);
 	}
 
 	public static void main(String[] args) {
