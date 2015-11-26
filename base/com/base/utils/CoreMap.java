@@ -61,7 +61,11 @@ public class CoreMap<K,V> extends HashMap<K,V> implements Serializable {
 	}
 
 	public String getString(String key) {
-		String v = null;
+		return getString(key, null);
+	}
+
+	public String getString(String key, String defaultValue) {
+		String v = defaultValue;
 		if (containsKey(key)) {
 			v = String.valueOf(get(key));
 		}
