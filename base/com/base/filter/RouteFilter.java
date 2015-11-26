@@ -83,7 +83,7 @@ public class RouteFilter implements Filter {
 		String packages = cfg.getInitParameter("packages");
 		this.actionPackages = Arrays.asList(StringUtils.split(packages, ','));
 
-		String ignores = cfg.getInitParameter("ignore");
+		String ignores = cfg.getInitParameter("ignoreURIs");
 		if (ignores != null) {
 			for (String ig : StringUtils.split(ignores, ',')) {
 				ignoreURIs.add(ig.trim());
@@ -110,16 +110,18 @@ public class RouteFilter implements Filter {
 
 		String reqUri = request.getRequestURI();
 		CoreMap outMap = new CoreMap();
-
+		
 		for (String ignoreExt : ignoreExts) {
 			if (reqUri.endsWith(ignoreExt)) {
 				chain.doFilter(request, response);
 				return;
 			}
 		}
-		if (reqUri.startsWith("/assets")) {
-			chain.doFilter(request, response);
-			return;
+		for (String ignoreURI : ignoreURIs) {
+			if (reqUri.endsWith(ignoreURI)) {
+				chain.doFilter(request, response);
+				return;
+			}
 		}
 
 		try {

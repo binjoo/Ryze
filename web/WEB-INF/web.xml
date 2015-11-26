@@ -9,8 +9,8 @@
             <param-value>com.common.action</param-value>
         </init-param>
 		<init-param>
-			<param-name>ignore</param-name>
-			<param-value>/action/,/uploads/,/img/,/css/,/js/</param-value>
+			<param-name>ignoreURIs</param-name>
+			<param-value>/assets/,/upload/</param-value>
 		</init-param>
 		<init-param>
 			<param-name>ignoreExts</param-name>
