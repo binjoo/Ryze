@@ -15,9 +15,9 @@ public class InviteDao extends CoreDao {
 	private static final Logger log = Logger.getLogger(InviteDao.class);
 
 	public String make(int userId) throws Exception {
-		String no = StrUtils.GUID_16();
-		String sql = "insert into sys_invite (no, created_user_id, created) values (?, ?, UNIX_TIMESTAMP())";
-		DBHepler.insert(sql, no, userId);
+//		String no = StrUtils.GUID_16();
+//		String sql = "insert into sys_invite (no, created_user_id, created) values (?, ?, UNIX_TIMESTAMP())";
+//		DBHepler.insert(null, no, userId);
 		return null;
 	}
 	
@@ -32,7 +32,7 @@ public class InviteDao extends CoreDao {
 		return out;
 	}
 	
-	public int activation(String no, int userId) throws Exception{
+	public int activation(String no, String userId) throws Exception{
 		String sql = "update sys_invite set register_user_id = ?, is_valid = 1 where no = ?";
 		return DBHepler.update(sql, userId, no);
 	}

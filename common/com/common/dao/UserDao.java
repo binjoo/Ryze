@@ -15,16 +15,16 @@ import com.base.utils.DateUtils;
 public class UserDao extends CoreDao {
     private static final Logger log = Logger.getLogger(UserDao.class);
 
-    public int insert(CoreMap inMap) throws Exception {
+    public String insert(CoreMap inMap) throws Exception {
     	CoreMap rows = new CoreMap();
     	rows.put("email", inMap.getString("email"));
     	rows.put("nickname", inMap.getString("nickname"));
     	rows.put("password", inMap.getString("password"));
     	rows.put("created", DateUtils.getTime());
 
-    	DBQuery q = new DBQuery();
-    	q.insert().from("sys_user").rows(rows);
-    	int id = DBHepler.insert(q.build(), q.getParams());
+    	DBQuery query = new DBQuery();
+    	query.insert().from("sys_user").rows(rows);
+    	String id = DBHepler.insert(query);
         return id;
     }
 

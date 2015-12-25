@@ -109,7 +109,7 @@ public class NoteAction extends CoreAction {
 		tmp.put("status", 0);
 		out.put("breadcrumb", ActionUtils.makeBreadcrumb("记事本", "/note", "新建笔记"));
 		out.put("note", tmp);
-		out.put("folder_id", inMap.getInt("folder_id"));
+		out.put("folder_id", inMap.getString("folder_id"));
 		out.put("folder", folder);
 		out.setOutRender("/note/edit_note");
 		return out;
@@ -145,7 +145,7 @@ public class NoteAction extends CoreAction {
 		inMap.put("type", "1");
 		inMap.put("parent_id", "0");
 		inMap.put("user_id", getLoginInfo().getInt("id"));
-		int id = noteDao.update(inMap);
+		String id = noteDao.update(inMap);
 
 		out.setOutType(Constants.OUT_TYPE__REDIRECT);
 		out.setOutRender("/note/index");
@@ -215,12 +215,12 @@ public class NoteAction extends CoreAction {
     	
     	DBQuery query = new DBQuery().from("note_content");
 
-    	int resultId = 0;
+    	String resultId = null;
     	if(inMap.getString("id") != null && !inMap.getString("id").equals("")){
         	rows.put("modifyed = modifyed + 1", null);
         	rows.remove("user_id");
         	rows.remove("type");
-    		resultId = inMap.getInt("id");
+    		resultId = inMap.getString("id");
     		query.rows(rows).update().where("id = ?", resultId);
         	//DBHepler.update(query.build(), query.getParams());
         	noteDao.update(query);

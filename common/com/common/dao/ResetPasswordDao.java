@@ -8,10 +8,11 @@ import com.base.utils.StrUtils;
 
 public class ResetPasswordDao extends CoreDao {
 	public int insert(CoreMap inMap) throws Exception {
-		long valid = DateUtils.getTime() + 60 * 60;
-		String sql = "insert into ya_reset_password (user_id, token, valid_time, create_ip) values (?, ?, ?, ?)";
-		int result = DBHepler.insert(sql, inMap.getString("user_id"), inMap.getString("token"), valid, inMap.getString("create_ip"));
-		return result;
+//		long valid = DateUtils.getTime() + 60 * 60;
+//		String sql = "insert into ya_reset_password (user_id, token, valid_time, create_ip) values (?, ?, ?, ?)";
+//		int result = DBHepler.insert(null, inMap.getString("user_id"), inMap.getString("token"), valid, inMap.getString("create_ip"));
+//		return result;
+		return 0;
 	}
 
 	public int updateStatus(CoreMap inMap) throws Exception {

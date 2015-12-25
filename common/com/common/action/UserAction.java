@@ -153,10 +153,10 @@ public class UserAction extends CoreAction {
             	out.put("message", list);
             }else{
                 //新增用户
-                int userId = new UserDao().insert(param);
-                if(userId > 0){
+            	String userId = new UserDao().insert(param);
+                if(userId != null){
                     if(site_invite.equals("1")){
-                    	int result = new InviteDao().activation(invite, userId);
+                    	new InviteDao().activation(invite, userId);
                     }
                     CoreMap user = new UserDao().checkUserId(String.valueOf(userId));
                     getSession().setAttribute("login", user);

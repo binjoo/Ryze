@@ -18,17 +18,17 @@ import com.base.utils.DateUtils;
 public class KVDao extends CoreDao {
     private static final Logger log = Logger.getLogger(KVDao.class);
 
-    public int insert(CoreMap inMap) throws Exception {
+    public String insert(CoreMap inMap) throws Exception {
     	CoreMap rows = new CoreMap();
     	rows.put("name", inMap.getString("name"));
     	rows.put("value", inMap.getString("value"));
     	rows.put("type", inMap.getString("type"));
     	rows.put("user_id", inMap.getString("user_id"));
 
-    	DBQuery q = new DBQuery();
-    	q.insert().from("sys_kv").rows(rows);
+    	DBQuery query = new DBQuery();
+    	query.insert().from("sys_kv").rows(rows);
     	//System.out.println(q.build());
-    	int id = DBHepler.insert(q.build(), q.getParams());
+    	String id = DBHepler.insert(query);
         return id;
     }
 

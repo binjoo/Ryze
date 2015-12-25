@@ -15,8 +15,8 @@ import com.base.utils.StrUtils;
 public class NoteDao extends CoreDao {
 	private static final Logger log = Logger.getLogger(NoteDao.class);
 
-    public int insert(DBQuery query) throws Exception {
-    	int id = DBHepler.insert(query.build(), query.getParams());
+    public String insert(DBQuery query) throws Exception {
+    	String id = DBHepler.insert(query);
         return id;
     }
     
@@ -25,7 +25,7 @@ public class NoteDao extends CoreDao {
         return id;
     }
 
-    public int update(CoreMap inMap) throws Exception {
+    public String update(CoreMap inMap) throws Exception {
     	CoreMap rows = new CoreMap();
     	rows.put("parent_id", inMap.getString("parent_id"));
     	rows.put("user_id", inMap.getString("user_id"));
@@ -35,16 +35,16 @@ public class NoteDao extends CoreDao {
     	rows.put("syntax", inMap.getString("syntax"));
     	rows.put("status", inMap.getString("status"));
     	rows.put("created", DateUtils.getTime());
-    	int id = 0;
+    	String id = null;
     	DBQuery query = new DBQuery();
     	query.from("note_content").rows(rows);
     	if(inMap.getString("id") != null && !inMap.getString("id").equals("")){
-    		id = inMap.getInt("id");
+    		id = inMap.getString("id");
     		query.update().where("id = ?", id);
         	DBHepler.update(query.build(), query.getParams());
     	}else{
     		query.insert();
-    		id = DBHepler.insert(query.build(), query.getParams());
+    		id = DBHepler.insert(query);
     	}
         return id;
     }

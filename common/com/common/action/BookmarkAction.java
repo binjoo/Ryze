@@ -87,7 +87,7 @@ public class BookmarkAction extends CoreAction {
         		tags = tags.replaceAll(";", ",");
         		String[] tagarray = tags.split(",");
         		for (int i = 0; i < tagarray.length; i++) {
-					int tagId = new MetaDao().getTagId(tagarray[i]);
+					String tagId = new MetaDao().getTagId(tagarray[i]);
 					CoreMap tmp = new CoreMap();
 					tmp.put("bookmark_id", bid);
 					tmp.put("meta_id", tagId);
