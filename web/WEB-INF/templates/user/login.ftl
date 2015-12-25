@@ -15,7 +15,7 @@
                         </div>
                         <div class="form-group">
                             <label for="form_password">密码：</label>
-                            <input name="password" value="123123" type="password" class="form-control" id="form_password" placeholder="********" />
+                            <input name="password" value="123456" type="password" class="form-control" id="form_password" placeholder="********" />
                         </div>
                         <#if (siteLoginCaptcha?exists && siteLoginCaptcha = "1")>
                         <div class="form-group">
