@@ -35,8 +35,7 @@ public class DBHepler {
 	 * @return
 	 * @throws Exception
 	 */
-	public static CoreMap querySingle(String sql, Object... params)
-			throws Exception {
+	public static CoreMap querySingle(String sql, Object... params) throws Exception {
 		Map<String, Object> map = queryRunner.query(getConnection(), sql, new MapHandler(), params);
 		if (map != null) {
 			return new CoreMap(map);
@@ -95,12 +94,32 @@ public class DBHepler {
 		return out;
 	}
 
-	public static int insert(String sql, Object... params) throws Exception {
-		Map<String, Object> map = queryRunner.insert(getConnection(), sql, new MapHandler(), params);
-		if (map != null) {
-			return new CoreMap(map).getInt("GENERATED_KEY");
-		} else {
-			return 0;
+//	public static int insert(String sql, Object... params) throws Exception {
+//		Map<String, Object> map = queryRunner.insert(getConnection(), sql, new MapHandler(), params);
+//		if (map != null) {
+//			return new CoreMap(map).getInt("GENERATED_KEY");
+//		} else {
+//			return 0;
+//		}
+//	}
+	
+	public static String getSequence(String name) throws Exception{
+		CoreMap result = querySingle("select get_sequence('" + name + "') as primary_id");
+		if(result != null){
+			return result.getString("primary_id");
+		}else{
+			return null;
+		}
+	}
+
+	public static String insert(DBQuery query) throws Exception {
+		String primary = getSequence(query.getTable());
+		if(primary != null){
+			String sql = query.build().replace("{{PRIMARY}}", primary);
+			Map<String, Object> map = queryRunner.insert(getConnection(), sql, new MapHandler(), query.getParams());
+			return primary;
+		}else{
+			return null;
 		}
 	}
 

@@ -57,6 +57,7 @@ public class DBQuery {
 	private String group;
 	private String having;
 	private CoreMap rows;
+	private String primary;
 
 	public DBQuery() {
 		this.sql = "";
@@ -72,6 +73,11 @@ public class DBQuery {
 		this.group = "";
 		this.having = "";
 		this.rows = new CoreMap();
+		this.primary = "id";
+	}
+	
+	public String getTable() {
+		return this.table;
 	}
 
 	public Object[] getParams() {
@@ -197,6 +203,11 @@ public class DBQuery {
 		return this;
 	}
 
+	public DBQuery primary(String primary) {
+		this.primary = primary;
+		return this;
+	}
+
 	public DBQuery where(Object... params) {
 		if (params == null) {
 			return this;
@@ -241,9 +252,13 @@ public class DBQuery {
 			v = ArrayUtils.add(v, "?");
 			this.params = ArrayUtils.add(this.params, value);
 		}
-		out.append(" (" + StrUtils.implode(" , ", k) + ") ");
+		out.append(" (");
+		out.append(this.primary == null ? "" : this.primary + ", ");
+		out.append(StrUtils.implode(" , ", k) + ") ");
 		out.append("values");
-		out.append(" (" + StrUtils.implode(" , ", v) + ") ");
+		out.append(" (");
+		out.append(this.primary == null ? "" : "'{{PRIMARY}}', ");
+		out.append(StrUtils.implode(" , ", v) + ") ");
 		return out.toString();
 	}
 
