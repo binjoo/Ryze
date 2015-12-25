@@ -8,7 +8,7 @@ body{
 	float: right!important;
 }
 .clear{
-clear:both;
+	clear:both;
 }
 /*
  * 文本位置
