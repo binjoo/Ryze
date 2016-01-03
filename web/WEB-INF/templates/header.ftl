@@ -26,7 +26,13 @@
                 </div>
                 <div class="header-control col-md-6 text-right">
                 <#if session.login?exists>
-                	当前登录：<a href="/user/${session.login.id}">${session.login.nickname?if_exists} <span class="caret"></span></a>
+                	当前登录：
+                	<div class="header-my-control">
+                		<a class="my-control" href="/user/${session.login.id}">${session.login.nickname?if_exists} <span class="caret"></span></a>
+                		<ul class="header-my-control-list" >
+                			<li><a href="/user/message">我的消息</a></li>
+                		</ul>
+                	</div>
                     [
                     <a class="message" href="/user/message">消息<span class="badge">7</span></a>
                     |
