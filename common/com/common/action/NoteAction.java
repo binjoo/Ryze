@@ -100,7 +100,7 @@ public class NoteAction extends CoreAction {
 	private CoreMap add_Get(CoreMap inMap) throws Exception {
 		CoreMap out = new CoreMap();
 		CoreMap tmp = new CoreMap();
-		tmp.put("user_id", getLoginInfo().getInt("id"));
+		tmp.put("user_id", getLoginInfo().getString("id"));
 		
 		List folder = this.queryFolder(null);
 		if(inMap.containsKey("message")){
@@ -131,7 +131,7 @@ public class NoteAction extends CoreAction {
 	private CoreMap folder_edit_Get(CoreMap inMap) throws Exception {
 		CoreMap out = new CoreMap();
 		CoreMap tmp = new CoreMap();
-		tmp.put("user_id", getLoginInfo().getInt("id"));
+		tmp.put("user_id", getLoginInfo().getString("id"));
 		List list = new BookmarkDao().query(tmp);
 
 		out.put("breadcrumb", ActionUtils.makeBreadcrumb("记事本", "/note", "创建文件夹"));
@@ -144,7 +144,7 @@ public class NoteAction extends CoreAction {
 		CoreMap out = new CoreMap();
 		inMap.put("type", "1");
 		inMap.put("parent_id", "0");
-		inMap.put("user_id", getLoginInfo().getInt("id"));
+		inMap.put("user_id", getLoginInfo().getString("id"));
 		String id = noteDao.update(inMap);
 
 		out.setOutType(Constants.OUT_TYPE__REDIRECT);
@@ -226,7 +226,7 @@ public class NoteAction extends CoreAction {
         	noteDao.update(query);
     	}else{
         	rows.put("type", "0");
-    		rows.put("user_id", getLoginInfo().getInt("id"));
+    		rows.put("user_id", getLoginInfo().getString("id"));
         	rows.put("created", DateUtils.getTime());
     		query.rows(rows).insert();
     		//id = DBHepler.insert(query.build(), query.getParams());

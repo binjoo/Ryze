@@ -22,7 +22,7 @@ public class BookmarkAction extends CoreAction {
 	        return goToLogin();
 	    }
 	    CoreMap tmp = new CoreMap();
-	    tmp.put("user_id", getLoginInfo().getInt("id"));
+	    tmp.put("user_id", getLoginInfo().getString("id"));
 	    List list = new BookmarkDao().query(tmp);
 	    
 	    for (int i = 0; i < list.size(); i++) {

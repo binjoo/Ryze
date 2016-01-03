@@ -397,6 +397,9 @@ public class DBQuery {
 		q.select("t1.id", "t1.name", "t2.remark").from("table_name t1");
 		q.join("table_name t2", "t2.t1_id = t1.id");
 		q.join("table_name t3", "t3.t2_id = t2.id", DBQuery.LEFT_JOIN);
+		q.order("xx");
+		System.out.println(q.build());
+		q.select("count(*) as stat");
 		System.out.println(q.build());
 		if(q.getParams().length >= 1){
 			System.out.print("> `Params: `{ ");
@@ -413,95 +416,5 @@ public class DBQuery {
 			}
 			System.out.print(" }");
 		}
-
-		// DBQuery q = new DBQuery();
-		// String[] n = {"name", "n"};
-		// String[] a = {"age", "a"};
-		// String[] e = {"email", "e"};
-		// q.select(n,"x").from("table_name");
-		// q.join("table_level", "table_level.user_id = table_name.id");
-		// q.where("name = ? or user_id = ?", "binjoo",
-		// 15).where("nick like '%?%'", "你好").where("email = 'binjoo@qq.com'");
-		// q.page(5, 10).order("create_date");
-		//
-		// System.out.println(q.build());
-		// System.out.print(q.build());
-		//
-		// System.out.println(sql);
-		// for (int i = 0; i < q.params.length; i++) {
-		// Object param = q.params[i];
-		// if(param instanceof String){
-		// System.out.println("String : " + String.valueOf(param));
-		// }else if(param instanceof Integer){
-		// System.out.println("Integer : " +
-		// Integer.valueOf(String.valueOf(param)));
-		// }
-		// }
-		//
-		// DBQuery ii = new DBQuery();
-		// ii.insert();
-		// CoreMap map = new CoreMap();
-		// map.put("name", "binjoo");
-		// map.put("age", 12);
-		// map.put("url", "http://baid.com");
-		// ii.rows(map);
-		// System.out.println(ii.build());
-		// for (int i = 0; i < ii.params.length; i++) {
-		// Object param = ii.params[i];
-		// if(param instanceof String){
-		// System.out.println("String : " + String.valueOf(param));
-		// }else if(param instanceof Integer){
-		// System.out.println("Integer : " +
-		// Integer.valueOf(String.valueOf(param)));
-		// }
-		// }
-		//
-		// DBQuery up = new DBQuery();
-		// up.update().from("tab_name");
-		// CoreMap map1 = new CoreMap();
-		// map1.put("name", "binjoo");
-		// map1.put("age", 12);
-		// map1.put("url", "http://baid.com");
-		// up.rows(map1);
-		// up.where("id = ?", "16");
-		// System.out.println(up.build());
-		// for (int i = 0; i < up.getParams().length; i++) {
-		// Object param = up.params[i];
-		// if (param instanceof String) {
-		// System.out.println("String : " + String.valueOf(param));
-		// } else if (param instanceof Integer) {
-		// System.out.println("Integer : "
-		// + Integer.valueOf(String.valueOf(param)));
-		// }
-		// }
-		// System.out.println(up.build());
-		// for (int i = 0; i < up.getParams().length; i++) {
-		// Object param = up.params[i];
-		// if (param instanceof String) {
-		// System.out.println("String : " + String.valueOf(param));
-		// } else if (param instanceof Integer) {
-		// System.out.println("Integer : "
-		// + Integer.valueOf(String.valueOf(param)));
-		// }
-		// }
-
-		// DBQuery d = new DBQuery();
-		// d.delete().from("table_name");
-		// d.where("name = ? or user_id = ?", "binjoo", 15).where("nick = ?",
-		// "你好").where("email = 'binjoo@qq.com'");
-		// d.page(5, 10).order("create_date");
-		//
-		// String sql1 = d.build();
-		//
-		// System.out.println(sql1);
-		// for (int i = 0; i < d.params.length; i++) {
-		// Object param = d.params[i];
-		// if(param instanceof String){
-		// System.out.println("String : " + String.valueOf(param));
-		// }else if(param instanceof Integer){
-		// System.out.println("Integer : " +
-		// Integer.valueOf(String.valueOf(param)));
-		// }
-		// }
 	}
 }

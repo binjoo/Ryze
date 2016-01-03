@@ -10,15 +10,15 @@
             </div>
             <div class="form-group">
                 <label for="site_description">站点描述</label>
-                <input type="text" class="form-control" name="site_description" placeholder="轻击键盘，静候回音。"value="${site_description?if_exists}" >
+                <input type="text" class="form-control" name="site_description" placeholder="轻击键盘，静候回音。" value="${site_description?if_exists}" />
             </div>
             <div class="form-group">
                 <label for="site_url">站点地址</label>
-                <input type="text" class="form-control" name="site_url" placeholder="http://www.domain.com"value="${site_url?if_exists}" >
+                <input type="text" class="form-control" name="site_url" placeholder="http://www.domain.com" value="${site_url?if_exists}" />
             </div>
             <div class="form-group">
                 <label for="site_email">管理员邮箱</label>
-                <input type="text" class="form-control" name="site_email" placeholder="yourname@domain.com"value="${site_email?if_exists}" >
+                <input type="text" class="form-control" name="site_email" placeholder="yourname@domain.com" value="${site_email?if_exists}" />
             </div>
         </div>
     </div>

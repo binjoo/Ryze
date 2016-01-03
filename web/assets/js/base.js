@@ -102,7 +102,18 @@ common.submit = function(){
 common.captcha = function(){
 	$(this).attr("src", "/action/captcha?" + Math.random());
 }
+common.controlIn = function(){
+	$(".header-my-control-list").show();
+}
+common.controlOut = function(){
+	$(".header-my-control-list").hide();
+}
+
+
 $(document).ready(function() {
 	$("button[name=form-submit]").click(common.submit);
 	$("img[name=captcha_img]").click(common.captcha);
+	
+	$(".header-my-control").mouseover(common.controlIn);
+	$(".header-my-control").mouseout(common.controlOut);
 });

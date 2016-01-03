@@ -23,7 +23,6 @@ import com.alibaba.druid.pool.DruidDataSourceFactory;
 public class DBManager {
     private final static Log log = LogFactory.getLog(DBManager.class);
     private final static ThreadLocal<Connection> conns = new ThreadLocal<Connection>();
-    //private static DataSource dataSource;
     private static DruidDataSource dds = null;
     private static boolean DEBUG = false;
      
