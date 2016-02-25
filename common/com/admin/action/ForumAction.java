@@ -7,7 +7,6 @@ import com.base.db.DBHepler;
 import com.base.db.DBQuery;
 import com.base.utils.CoreMap;
 import com.common.dao.NodeDao;
-import com.common.dao.UserDao;
 
 @SuppressWarnings({"rawtypes", "unchecked"})
 public class ForumAction extends CoreAction {

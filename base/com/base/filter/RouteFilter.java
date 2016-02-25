@@ -111,14 +111,15 @@ public class RouteFilter implements Filter {
 		String reqUri = request.getRequestURI();
 		CoreMap outMap = new CoreMap();
 		
-		for (String ignoreExt : ignoreExts) {
-			if (reqUri.endsWith(ignoreExt)) {
+		for (String ignoreURI : ignoreURIs) {
+			if (reqUri.startsWith(ignoreURI)) {
 				chain.doFilter(request, response);
 				return;
 			}
 		}
-		for (String ignoreURI : ignoreURIs) {
-			if (reqUri.endsWith(ignoreURI)) {
+		
+		for (String ignoreExt : ignoreExts) {
+			if (reqUri.endsWith(ignoreExt)) {
 				chain.doFilter(request, response);
 				return;
 			}
