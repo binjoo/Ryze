@@ -274,6 +274,11 @@ public class RequestUtils {
         Enumeration it = httpReq.getParameterNames();
         while (it.hasMoreElements()) {
             String key = String.valueOf(it.nextElement());
+            String[] array = httpReq.getParameterValues(key);
+            if(array.length > 1){
+                outMap.put(key, array);
+                continue;
+            }
             String value = httpReq.getParameter(key);
             value = stripXSS(value);
 //            value = StringEscapeUtils.escapeHtml(value);

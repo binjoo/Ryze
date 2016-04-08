@@ -1,9 +1,6 @@
 body{
   padding-top: 50px;
 }
-.main {
-	padding: 20px 40px;
-}
 .sidebar {
 	position: fixed;
 	top: 51px;
@@ -32,4 +29,18 @@ body{
 .nav-sidebar > .active > a:focus {
   color: #fff;
   background-color: #428bca;
+}
+.main {
+	padding: 0;
+}
+.main #main{
+	height: 100%;
+	width: 100%;
+	overflow: visible;
+}
+.main-body{
+	padding-top: 0;
+}
+.main-panel {
+	padding: 20px;
 }

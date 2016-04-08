@@ -16,7 +16,7 @@ public class UserAction extends CoreAction {
         return out;
 	}
 
-	public CoreMap manage(CoreMap inMap) throws Exception {
+	public CoreMap userManage(CoreMap inMap) throws Exception {
 	    CoreMap out = new CoreMap();
 	    int page = inMap.getInt("page", 1);	//当前页数
 	    UserDao ud = new UserDao();
@@ -42,7 +42,7 @@ public class UserAction extends CoreAction {
 	    out.put("count", count);
 	    out.put("page", inMap.getInt("page"));
 	    out.put("size", inMap.getInt("size"));
-	    out.setOutRender("/admin/user/manage");
+	    out.setOutRender("/admin/user/user_manage");
 		return out;
 	}
 
@@ -63,6 +63,27 @@ public class UserAction extends CoreAction {
 	    
 	    out.put("groups", list);
 	    out.setOutRender("/admin/user/group");
+
+		return out;
+	}
+
+	public CoreMap manageGroup(CoreMap inMap) throws Exception {
+	    CoreMap out = new CoreMap();
+	    if(getParts().length >= 5){
+	    	if(getParts()[3].equals("config")){
+	    		return groupConfig(inMap);
+	    	}
+	    }
+
+    	DBQuery q = new DBQuery();
+    	q.select().from("sys_group");
+    	q.order("manage", DBQuery.SORT_DESC);
+    	
+    	GroupDao gd = new GroupDao();
+	    List list = gd.queryList(q);
+	    
+	    out.put("groups", list);
+	    out.setOutRender("/admin/user/manage_group");
 
 		return out;
 	}

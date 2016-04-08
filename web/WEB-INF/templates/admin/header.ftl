@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
@@ -13,28 +13,5 @@
 <script type="text/javascript" src="/assets/js/base.js"></script>
 <script type="text/javascript" src="/assets/js/admin.js"></script>
 </head>
-<body>
-<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="/admin">Ryze Control Panel</a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-                <#if header_menu?exists>
-                <#list header_menu as row>
-                    <li${(menu_active==row.key)?string(" class=\"active\"", "")}><a href="/admin${row.url}">${row.name}</a></li>
-                </#list>
-                </#if>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-            	<p class="navbar-text">你好，${session.login.nickname?if_exists}</p>
-            	<li><a href="/">站点</a></li>
-            	<li><a href="#">退出</a></li>
-            </ul>
-        </div>
-    </div>
-</nav>
-<div class="container-fluid">
-	<div class="row">
-	<#include "/admin/sidebar.ftl">
+<body class="main-body">
+<div class="main-panel">

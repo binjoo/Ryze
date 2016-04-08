@@ -27,6 +27,9 @@ public class NoteAction extends CoreAction {
 		if (!isLogin()) {
 			return goToLogin();
 		}
+		if(inMap.containsKey("id")){
+			return this.view(inMap);
+		}
 
     	DBQuery q = new DBQuery();
     	q.select().from("note_content");
@@ -61,7 +64,7 @@ public class NoteAction extends CoreAction {
 
 	private CoreMap view(CoreMap inMap) throws Exception {
 		CoreMap out = new CoreMap();
-		String id = this.getParts()[1];
+		String id = inMap.getString("id");
 		DBQuery q = new DBQuery();
 		q.select().from("note_content").where("id = ?", id);
 		CoreMap note = noteDao.querySingle(q);

@@ -36,5 +36,6 @@
 	<classpathentry kind="lib" path="web/WEB-INF/lib/asm-util-5.0.3.jar"/>
 	<classpathentry kind="lib" path="web/WEB-INF/lib/parboiled-core-1.1.7.jar"/>
 	<classpathentry kind="lib" path="web/WEB-INF/lib/pegdown-1.6.0.jar"/>
+	<classpathentry kind="lib" path="web/WEB-INF/lib/dom4j-1.6.1.jar"/>
 	<classpathentry kind="output" path="web/WEB-INF/classes"/>
 </classpath>

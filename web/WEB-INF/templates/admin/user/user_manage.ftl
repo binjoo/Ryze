@@ -1,5 +1,4 @@
 <#include "/admin/header.ftl">
-<div class="col-md-10 col-md-offset-2 main">
 <div class="panel panel-default">
 	<div class="panel-body">
 	<form class="form-inline" action="/admin?action=user&method=manage" method="POST" role="form">
@@ -38,6 +37,5 @@
 	</table>
 	<#import "/ftl/page.ftl" as p>
 	<@p.box page=page size=size count=count url="/admin?action=user&method=manage&page={?}"/>
-</div>
 </div>
 <#include "/admin/footer.ftl">

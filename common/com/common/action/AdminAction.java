@@ -5,14 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.base.action.CoreAction;
-import com.base.filter.RouteFilter;
-import com.base.utils.CoreMap;
+import com.base.bean.Menu;
 import com.base.utils.Constants;
-import com.base.utils.RequestUtils;
+import com.base.utils.CoreMap;
+import com.base.utils.StrUtils;
 import com.config.MenuConfig;
 
 @SuppressWarnings({ "unused", "unchecked", "rawtypes" })
@@ -39,13 +38,25 @@ public class AdminAction extends CoreAction {
         	out.setOutRender("/");
         	return out;
         }
-        //初始化菜单栏参数
-        inMap = getActionAndMethod(inMap);
-        out = execute(inMap);
-
-        out.putAll(getMenu(inMap));
+        
+        if(inMap.containsKey("action")){
+        	if(!inMap.containsKey("method")){
+        		String action = inMap.getString("action");
+        		String method = "";
+        		List<Menu> menuList = (List<Menu>) MenuConfig.getMenuMap().get(action);
+        		if(menuList != null){
+        			method = menuList.get(0).getAction();
+        		}
+        		inMap.put("method", method);
+        	}
+            return execute(inMap);
+        }else{
+            out.put("admin_menu", MenuConfig.getMenuList());
+        	out.setOutRender("/admin/index");
+        }
         return out;
     }
+    
     public CoreMap notFound(CoreMap inMap) throws Exception {
         return index(inMap);
     }
@@ -54,46 +65,8 @@ public class AdminAction extends CoreAction {
         CoreMap out = new CoreMap();
         String action = inMap.getString("action");
         String method = inMap.getString("method");
-        if(action != null && method != null){
-        	out.putAll(getMenu(inMap));
-        }else{
-        	action = MenuConfig.DEFAULT_HEADER_MENU_KEY;
-        	method = MenuConfig.DEFAULT_SIDEBAR_MENU_KEY;
-        }
-        
         out.put("url", "/admin?action=" + action + "&method=" + method);
 		out.setOutRender("/admin/goto");
-        return out;
-    }
-
-    /**
-     * 获得菜单栏参数，初始化默认值
-     * @param inMap
-     * @return
-     */
-    private CoreMap getActionAndMethod(CoreMap inMap) throws Exception {
-        String actionName = inMap.getString("action") != null ? inMap.getString("action") : "global";
-        String methodName = null;
-        if(MenuConfig.isExists(actionName)){
-        	methodName = inMap.getString("method") != null ? inMap.getString("method") : ((CoreMap) MenuConfig.get(actionName).get(0)).getString("key");
-        }else{
-        	actionName = MenuConfig.DEFAULT_HEADER_MENU_KEY;
-        	methodName = MenuConfig.DEFAULT_SIDEBAR_MENU_KEY;
-        }
-        inMap.put("action", actionName);
-        inMap.put("method", methodName);
-        return inMap;
-    }
-
-    private CoreMap getMenu(CoreMap inMap) throws Exception  {
-        CoreMap out = new CoreMap();
-        String actionName = inMap.getString("action");
-        String methodName = inMap.getString("method");
-        
-        out.put("menu_active", actionName);
-        out.put("sidebar_active", methodName);
-        out.put("header_menu", MenuConfig.getAll());
-        out.put("sidebar_menu", MenuConfig.get(actionName));
         return out;
     }
     
@@ -106,9 +79,10 @@ public class AdminAction extends CoreAction {
         CoreMap out = new CoreMap();
         String actionName = inMap.getString("action");
         String methodName = inMap.getString("method");
+        methodName = StrUtils.replaceUnderlineAndFirstLetterToUpper(methodName, false);
 
         CoreAction action = (CoreAction) actions.get(actionName);
-        String cls = "com.admin.action." + StringUtils.capitalize(actionName) + "Action";
+        String cls = "com.admin.action." + StrUtils.replaceUnderlineAndFirstLetterToUpper(actionName) + "Action";
         
         if(action == null){
             try {
@@ -147,7 +121,6 @@ public class AdminAction extends CoreAction {
         }
 
         out =  (CoreMap) method.invoke(action, inMap);
-        
         return out;
     }
 

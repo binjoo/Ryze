@@ -1,5 +1,4 @@
 <#include "/admin/header.ftl">
-<div class="col-md-10 col-md-offset-2 main">
 	<div class="jumbotron">
 		<div class="container">
 		  <h1>Hello, ${session.login.nickname?if_exists}!</h1>
@@ -44,5 +43,4 @@
             </table>
         </div>
     </div>
-</div>
 <#include "/admin/footer.ftl">

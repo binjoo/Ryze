@@ -35,6 +35,8 @@ import com.base.utils.CharsetUtils;
 import com.base.utils.CoreMap;
 import com.base.utils.Constants;
 import com.base.utils.RequestUtils;
+import com.base.utils.StrUtils;
+import com.base.utils.UrlRewrite;
 
 import freemarker.ext.servlet.HttpSessionHashModel;
 import freemarker.template.Configuration;
@@ -49,6 +51,7 @@ public class RouteFilter implements Filter {
 	private List<String> actionPackages = null;
 	private ServletContext context;
 	private Configuration cfg;
+	private UrlRewrite urlRewrite;
 
 	private HashMap<String, Configuration> templates = new HashMap<String, Configuration>();
 	private List<String> ignoreURIs = new ArrayList<String>();
@@ -58,6 +61,24 @@ public class RouteFilter implements Filter {
 	private final static HashMap<String, Method> methods = new HashMap<String, Method>();
 
 	public void init(FilterConfig cfg) throws ServletException {
+		/*
+		 * 开发者模式
+		 */
+		String devMode = AppConfig.getPro("devmode");
+		if(devMode != null && "true".equals(devMode)){
+			Constants.devMode = true;
+		}
+		/*
+		 * UrlRewrite伪静态
+		 */
+		String urlRewriteMode = AppConfig.getPro("urlRewriteMode");
+		if(urlRewriteMode != null && "true".equals(urlRewriteMode)){
+			Constants.urlRewriteMode = true;
+		}
+
+		/*
+		 * 初始化前台引擎模版
+		 */
 		try {
 			freemarker.log.Logger.selectLoggerLibrary(freemarker.log.Logger.LIBRARY_NONE);
 		} catch (ClassNotFoundException e) {
@@ -65,9 +86,6 @@ public class RouteFilter implements Filter {
 		}
 
 		this.context = cfg.getServletContext();
-		/**
-		 * 初始化前台引擎模版
-		 */
 		String pathPrefix = AppConfig.getPro("templatePathPrefix");
 		if (pathPrefix == null || pathPrefix.equals("")) {
 			pathPrefix = "default";
@@ -77,7 +95,7 @@ public class RouteFilter implements Filter {
 		this.cfg.setClassForTemplateLoading(this.getClass(), "/../" + pathPrefix);
 		this.cfg.setObjectWrapper(new DefaultObjectWrapper());
 
-		/**
+		/*
 		 * 获得ACTION包
 		 */
 		String packages = cfg.getInitParameter("packages");
@@ -96,6 +114,15 @@ public class RouteFilter implements Filter {
 				ignoreExts.add('.' + ig.trim());
 			}
 		}
+		
+		/*
+		 * UrlRewrite伪静态规则
+		 */
+		try {
+			urlRewrite = new UrlRewrite();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void destroy() {
@@ -107,36 +134,41 @@ public class RouteFilter implements Filter {
 		HttpServletResponse response = (HttpServletResponse) res;
 		request.setCharacterEncoding(CharsetUtils.UTF_8);
 		response.setCharacterEncoding(CharsetUtils.UTF_8);
-
-		String reqUri = request.getRequestURI();
-		CoreMap outMap = new CoreMap();
 		
-		for (String ignoreURI : ignoreURIs) {
-			if (reqUri.startsWith(ignoreURI)) {
-				chain.doFilter(request, response);
-				return;
-			}
-		}
-		
-		for (String ignoreExt : ignoreExts) {
-			if (reqUri.endsWith(ignoreExt)) {
-				chain.doFilter(request, response);
-				return;
-			}
-		}
-
 		try {
+			String reqUri = request.getRequestURI();
+			CoreMap outMap = new CoreMap();
+			
+			for (String ignoreURI : ignoreURIs) {
+				if (reqUri.startsWith(ignoreURI)) {
+					chain.doFilter(request, response);
+					return;
+				}
+			}
+			
+			for (String ignoreExt : ignoreExts) {
+				if (reqUri.endsWith(ignoreExt)) {
+					chain.doFilter(request, response);
+					return;
+				}
+			}
+			
+			if(Constants.urlRewriteMode){
+				boolean isWith = urlRewrite.dealWithUrl(request, response);
+				if(isWith) return;
+			}
+			
 			String uri = request.getRequestURI();
 			String[] parts = StringUtils.split(uri, "/");
 			if (parts.length < 1) {
-				parts = new String[] { "action" };
+				parts = new String[] { "index" };
 			}
 
 			CoreAction action = (CoreAction) this.loadAction(parts[0]);
 
 			if (action == null) {
 				log.info("找不到 " + parts[0] + "Action...");
-				action = (CoreAction) this.loadAction("action");
+				action = (CoreAction) this.loadAction("index");
 			} else {
 				action.setAction(parts[0]);
 				action.setParts(parts);
@@ -226,7 +258,7 @@ public class RouteFilter implements Filter {
 		Object action = actions.get(actionName);
 		if (action == null) {
 			for (String pkg : actionPackages) {
-				String cls = pkg + '.' + StringUtils.capitalize(actionName) + "Action";
+				String cls = pkg + '.' + StrUtils.replaceUnderlineAndFirstLetterToUpper(actionName) + "Action";
 				try {
 					action = Class.forName(cls).newInstance();
 				} catch (ClassNotFoundException excp) {

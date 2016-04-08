@@ -1,14 +1,17 @@
 <div class="col-md-2 sidebar">
-    <ul class="nav nav-sidebar">
-    <#if sidebar_menu?exists>
-    <#list sidebar_menu as row>
-    	<#if row??>
-	        <li${(sidebar_active==row.key)?string(" class=\"active\"", "")}><a href="/admin${row.url}">${row.name}</a></li>
-    	<#else>
-    		</ul>
-    		<ul class="nav nav-sidebar">
-    	</#if>
-    </#list>
-    </#if>
-    </ul>
+	<#if admin_menu?exists>
+	<#list admin_menu as nav>
+		<#if nav??>
+			<ul id="nav-menu-${nav.key}" class="nav nav-sidebar" ${(nav_index == 0)?string(" class=\"display:\"", "style=\"display: none\"")}>
+				<#if nav.child?exists>
+					<#list nav.child as row>
+				        <li${(row_index == 0)?string(" class=\"active\"", "")}>
+				        	<a href="/admin?action=${nav.action}&method=${row.action}" hidefocus="true" target="main">${row.name}</a>
+				        </li>
+					</#list>
+				</#if>
+			</ul>
+		</#if>
+	</#list>
+	</#if>
 </div>

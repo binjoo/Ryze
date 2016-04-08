@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlrewrite>
+    <rule>
+        <from>/note/(.*)/(.*)</from>
+        <to><![CDATA[/note?id=$1&name=$2]]></to>
+    </rule>
+</urlrewrite>

@@ -13,7 +13,7 @@ import com.base.utils.Constants;
 import com.common.dao.TopicDao;
 
 @SuppressWarnings({ "unused", "unchecked", "rawtypes" })
-public class ActionAction extends CoreAction {
+public class IndexAction extends CoreAction {
     private final static String CACHE_REGION = "session";
     private final static String COOKIE_NAME = "_reg_key_";
     private static int WIDTH = 120;

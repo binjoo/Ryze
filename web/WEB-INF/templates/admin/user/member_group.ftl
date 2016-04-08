@@ -7,7 +7,7 @@
 		<thead>
 	        <tr>
 		        <th class="w35 tc">#</th>
-		        <th class="w160">组名称</th>
+		        <th class="w160">组头衔</th>
 		        <th class="w160">组类型</th>
 		        <th></th>
 	        </tr>
@@ -31,13 +31,13 @@
 	</div>
 </div>
 <div class="panel panel-default">
-	<div class="panel-heading">用户组</div>
+	<div class="panel-heading">会员组</div>
 	<div class="panel-body">
 	<table class="table table-striped table-hover">
 		<thead>
 	        <tr>
 		        <th class="w35 tc">#</th>
-		        <th class="w160">组名称</th>
+		        <th class="w160">组头衔</th>
 		        <th class="w160">组类型</th>
 		        <th></th>
 	        </tr>

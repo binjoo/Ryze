@@ -14,6 +14,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.pool.DruidDataSourceFactory;
+import com.base.utils.Constants;
  
 /**
  * 数据库管理
@@ -47,9 +48,6 @@ public class DBManager {
                 if(skey.startsWith("jdbc.")){
                     String name = skey.substring(5);
                     dbProps.put(name, dbProperties.getProperty(skey));
-                    if("debug".equalsIgnoreCase(name)){
-                        DEBUG = "true".equalsIgnoreCase(dbProperties.getProperty(skey));
-                    }
                 }
             }
             
@@ -87,7 +85,7 @@ public class DBManager {
             conn.setAutoCommit(false);
             conns.set(conn);
         }
-        return (DEBUG && !Proxy.isProxyClass(conn.getClass())) ? new _DebugConnection(conn).getConnection():conn;
+        return (Constants.devMode && !Proxy.isProxyClass(conn.getClass())) ? new _DebugConnection(conn).getConnection():conn;
     }
      
     /**
