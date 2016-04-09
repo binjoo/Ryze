@@ -6,28 +6,34 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DateUtils {
+	/**
+	 * 获得当前系统时间戳（秒）
+	 * @return
+	 */
     public static String getTimeToString() {
-        return String.valueOf(System.currentTimeMillis() / 1000);
+        return String.valueOf(getTimes() / 1000);
     }
-
+    
+	/**
+	 * 获得当前系统时间戳（秒）
+	 * @return
+	 */
     public static long getTime() {
-        return System.currentTimeMillis() / 1000;
+        return getTimes() / 1000;
     }
-
-    /***
-     * 毫秒级
-     * 
-     * @return
-     */
+    
+	/**
+	 * 获得当前系统时间戳（毫秒）
+	 * @return
+	 */
     public static String getTimesToString() {
-        return String.valueOf(System.currentTimeMillis());
+        return String.valueOf(getTimes());
     }
-
-    /***
-     * 毫秒级
-     * 
-     * @return
-     */
+    
+	/**
+	 * 获得当前系统时间戳（毫秒）
+	 * @return
+	 */
     public static long getTimes() {
         return System.currentTimeMillis();
     }
