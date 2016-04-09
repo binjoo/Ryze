@@ -8,6 +8,7 @@ import java.util.Map;
 import org.apache.commons.lang.ArrayUtils;
 
 import com.base.utils.CoreMap;
+import com.base.utils.DateUtils;
 import com.base.utils.StrUtils;
 
 /**
@@ -224,9 +225,16 @@ public class DBQuery {
 		}
 		return this;
 	}
-
+	
 	public DBQuery rows(CoreMap rows) {
 		this.rows.putAll(rows);
+		return this;
+	}
+
+	public DBQuery rows(String key, String val) {
+		CoreMap row = new CoreMap();
+		row.put(key, val);
+		this.rows.putAll(row);
 		return this;
 	}
 
@@ -240,6 +248,12 @@ public class DBQuery {
 		out.append(this.table);
 		Object[] k = new String[0];
 		Object[] v = new String[0];
+		if(!rows.containsKey("created")){
+			this.rows("created", DateUtils.getTimeToString());
+		}
+		if(!rows.containsKey("updated")){
+			this.rows("updated", DateUtils.getTimeToString());
+		}
 		Iterator it = rows.entrySet().iterator();
 		while (it.hasNext()) {
 			Map.Entry e = (Map.Entry) it.next();
@@ -287,6 +301,9 @@ public class DBQuery {
 	private String buildUpdate() {
 		StringBuffer out = new StringBuffer("update ");
 		Object[] set = new String[0];
+		if(!rows.containsKey("updated")){
+			this.rows("updated", DateUtils.getTimesToString());
+		}
 		Iterator it = rows.entrySet().iterator();
 		while (it.hasNext()) {
 			Map.Entry e = (Map.Entry) it.next();
