@@ -1,5 +1,4 @@
 <#include "/admin/header.ftl">
-<div class="col-md-10 col-md-offset-2 main">
 <form class="form-inline mb20" action="/admin/user/manage" method="POST" role="form">
 	<div class="form-group">
 		<div class="input-group">
@@ -10,9 +9,9 @@
 	<button type="submit" class="btn btn-default">
 		<span class="glyphicon glyphicon-search"></span> 查询
 	</button>
-	<a href="/admin?action=forum&method=node" class="btn btn-primary">
-		<span class="glyphicon glyphicon-pencil"></span> 新增
-	</a>
+	<button type="button" class="btn btn-primary" data-toggle="modal" data-backdrop="static" data-target="#nodeEdit">
+  		<span class="glyphicon glyphicon-pencil"></span> 新增
+	</button>
 </form>
 <div class="panel panel-default">
 	<div class="panel-heading">城市</div>
@@ -24,5 +23,6 @@
 		</#if>
 	</div>
 </div>
-</div>
+<!-- 编辑窗口 -->
+<#include "/admin/forum/node_edit.ftl">
 <#include "/admin/footer.ftl">
