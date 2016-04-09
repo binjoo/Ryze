@@ -11,4 +11,9 @@ public abstract class CoreDao {
 		List list = DBHepler.queryList(query.build(), query.getParams());
 		return list;
 	}
+
+	public String insert(DBQuery query) throws Exception {
+		String result = DBHepler.insert(query);
+		return result;
+	}
 }
