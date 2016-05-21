@@ -5,7 +5,6 @@ import java.io.Writer;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,17 +22,15 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONObject;
 
-import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.base.action.CoreAction;
 import com.base.db.DBManager;
-import com.base.ftl.model.FriendlyDateModel;
 import com.base.utils.AppConfig;
 import com.base.utils.CharsetUtils;
-import com.base.utils.CoreMap;
 import com.base.utils.Constants;
+import com.base.utils.CoreMap;
 import com.base.utils.RequestUtils;
 import com.base.utils.StrUtils;
 import com.base.utils.UrlRewrite;
@@ -203,6 +200,9 @@ public class RouteFilter implements Filter {
 				if (!outMap.containsKey("callback")) {
 					outMap.put("callback", outMap.getCallback());
 				}
+				if (!outMap.containsKey("status")) {
+					outMap.put("status", "0");
+				}
 
 				if (type.equals(Constants.OUT_TYPE__PAGE)) {
 					Template temp = this.cfg.getTemplate(render + ".ftl");
@@ -213,8 +213,6 @@ public class RouteFilter implements Filter {
 						data.put("response", response);
 						data.put("session", new HttpSessionHashModel(request.getSession(), cfg.getObjectWrapper()));
 						data.put("ms", System.currentTimeMillis());
-						
-						data.put("friendly", new FriendlyDateModel());
 						
 						temp.process(data, out);
 					} catch (TemplateException e) {

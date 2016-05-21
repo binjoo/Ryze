@@ -27,9 +27,13 @@ pageObj.index = new function() {
 pageObj.node = new function(){
 	this.init = function(){
 		$("#node_save").click(this.btn_save);
+		$("#node_edit").click(this.btn_edit);
 	},
 	this.btn_search = function(){
 		
+	},
+	this.btn_edit = function(){
+		$('#nodeEditWindow').modal({backdrop: 'static'});
 	},
 	this.btn_save = function(){
 		var con = false;
@@ -44,6 +48,23 @@ pageObj.node = new function(){
 		}
 		if(con) return;
 		$("form[name=node_edit]").submit();
+	},
+	this.a_node_edit = function(id){
+		var param = {
+			action: 'forum',
+			method: 'nodeEdit',
+			id: id
+		}
+		$.ajax({url: "/admin", data: param, success: function(data){
+			if(data.status == 0){
+				$("#nodeEditWindow input[name=id]").val(data.node.id);
+				$("#nodeEditWindow select[name=parent_id]").val(data.node.parent_id);
+				$("#nodeEditWindow input[name=no]").val(data.node.no);
+				$("#nodeEditWindow input[name=name]").val(data.node.name);
+				$("#nodeEditWindow input[name=description]").val(data.node.description);
+				$('#nodeEditWindow').modal({backdrop: 'static'});
+			}
+		}});
 	}
 }
 

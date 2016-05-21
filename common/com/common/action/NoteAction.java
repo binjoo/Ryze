@@ -9,6 +9,7 @@ import org.pegdown.PegDownProcessor;
 
 import com.base.action.CoreAction;
 import com.base.db.DBQuery;
+import com.base.ftl.model.FriendlyDateModel;
 import com.base.utils.ActionUtils;
 import com.base.utils.Constants;
 import com.base.utils.CoreMap;
@@ -47,6 +48,7 @@ public class NoteAction extends CoreAction {
 		out.put("parent_id", inMap.getString("parent_id"));
 		out.put("breadcrumb", ActionUtils.makeBreadcrumb("记事本"));
 		out.put("list", list);
+		out.put("friendly", new FriendlyDateModel());
 		out.setOutRender("/note/index");
 		return out;
 	}

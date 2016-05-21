@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings({ "unchecked", "rawtypes", "serial" })
-public class CoreMap<K,V> extends HashMap<K,V> implements Serializable {
+public class CoreMap<K, V> extends HashMap<K, V> implements Serializable {
 	private String outType;
 	private String outRender;
 	private String callback;
@@ -154,5 +154,10 @@ public class CoreMap<K,V> extends HashMap<K,V> implements Serializable {
 			return Boolean.valueOf(b);
 		}
 		return null;
+	}
+
+	public CoreMap RenderJson() {
+		this.setOutType(Constants.OUT_TYPE__JSON);
+		return this;
 	}
 }

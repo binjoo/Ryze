@@ -19,7 +19,12 @@ public class ForumAction extends CoreAction {
 	
 	public CoreMap nodeEdit (CoreMap inMap) throws Exception {
 		CoreMap out = new CoreMap();
-		if(isPost()){
+		if(isAjax()){
+			if(inMap.containsKey("id")){
+				out.put("node", nodeDao.queryNodeObjectById(inMap.getString("id")));
+			}
+			return out.RenderJson();
+		}else if(isPost()){
 			CoreMap node = new CoreMap();
 			node.put("parent_id", inMap.getString("parent_id"));
 			node.put("no", inMap.getString("no"));
@@ -39,16 +44,18 @@ public class ForumAction extends CoreAction {
 		if(inMap.containsKey("message")){
 			out.put("message", inMap.getString("message"));
 		}
-		
-		DBQuery q = new DBQuery();
-		q.select().from("forum_node").order("created", DBQuery.SORT_DESC);
-		List list = nodeDao.queryList(q);
-	    out.put("nodes", list);
 
-		DBQuery parent = new DBQuery();
-		parent.select().from("forum_node").where("parent_id = ''").order("created", DBQuery.SORT_DESC);
-		List parentList = nodeDao.queryList(q);
-	    out.put("parent", parentList);
+		DBQuery parents = new DBQuery();
+		parents.select().from("forum_node").where("parent_id = ?", "").order("turn", DBQuery.SORT_ASC);
+		List parentsList = nodeDao.queryList(parents);
+	    out.put("parents", parentsList);
+
+		DBQuery nodes = new DBQuery();
+		nodes.select("fn.*, fnp.name as parent_name, fnp.turn as parent_turn").from("forum_node fn").join("forum_node fnp", "fn.parent_id = fnp.id");
+		nodes.where("fn.parent_id <> ?", "").order("fnp.turn", DBQuery.SORT_ASC).order("fn.turn", DBQuery.SORT_ASC);
+		List nodesList = nodeDao.queryList(nodes);
+	    out.put("nodes", nodesList);
+
 		out.setOutRender("/admin/forum/node_list");
 		return out;
 	}

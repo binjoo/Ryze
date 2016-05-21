@@ -1,4 +1,4 @@
-<div class="modal fade" id="nodeEdit" tabindex="-1" role="dialog" aria-labelledby="nodeEditLabel">
+<div class="modal fade" id="nodeEditWindow" tabindex="-1" role="dialog" aria-labelledby="nodeEditLabel">
 	<form name="node_edit" action="/admin?action=forum&method=node_edit" method="POST">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
@@ -7,12 +7,13 @@
 				<h4 class="modal-title" id="nodeEditLabel">节点信息</h4>
 			</div>
 			<div class="modal-body">
+	            <input type="text" name="id" />
 		        <div class="form-group">
 		            <label for="site_title">上级节点</label>
 					<select class="form-control" name="parent_id">
 						<option value="">无</option>
-						<#if parent?exists>
-						<#list parent as row>
+						<#if parents?exists>
+						<#list parents as row>
 							<option value="${row.id}">${row.name}(${row.no})</option>
 						</#list>
 						</#if>
@@ -20,15 +21,15 @@
 		        </div>
 		        <div class="form-group">
 		            <label for="site_description">节点别名</label>
-		            <input type="text" class="form-control" name="no" value="${site_description?if_exists}" />
+		            <input type="text" class="form-control" name="no" />
 		        </div>
 		        <div class="form-group">
 		            <label for="site_title">节点名称</label>
-		            <input type="text" class="form-control" name="name" value="${site_title?if_exists}" />
+		            <input type="text" class="form-control" name="name" />
 		        </div>
 		        <div class="form-group">
 		            <label for="site_url">节点描述</label>
-		            <input type="text" class="form-control" name="description" value="${site_url?if_exists}" />
+		            <input type="text" class="form-control" name="description" />
 		        </div>
 			</div>
 			<div class="modal-footer">

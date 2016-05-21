@@ -47,6 +47,15 @@ public class DBHepler {
 			return null;
 		}
 	}
+	public static CoreMap querySingle(DBQuery query)
+			throws Exception {
+		Map<String, Object> map = queryRunner.query(getConnection(), query.build(), new MapHandler(), query.getParams());
+		if (map != null) {
+			return new CoreMap(map);
+		} else {
+			return null;
+		}
+	}
 
 	public static CoreMap querySingleCache(String name, String key, String sql, Object... params) throws Exception {
 		CoreMap out = (CoreMap) CacheManager.get(name, key);
