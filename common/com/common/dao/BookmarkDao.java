@@ -28,7 +28,7 @@ public class BookmarkDao extends CoreDao {
 
 	public List query(CoreMap inMap) throws Exception {
 		String sql = "select * from ya_bookmark where user_id = ? order by created desc";
-		List list = DBHepler.queryListCache("BookmarkList", "user_id_" + inMap.getString("user_id"), sql, inMap.getLong("user_id"));
+		List list = DBHepler.queryList("BookmarkList", "user_id_" + inMap.getString("user_id"), sql, inMap.getLong("user_id"));
 		return list;
 	}
 

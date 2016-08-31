@@ -3,10 +3,8 @@ package com.admin.action;
 import java.util.Properties;
 
 import com.base.action.CoreAction;
-import com.base.cache.CacheManager;
-import com.base.db.DBHepler;
-import com.base.utils.CoreMap;
 import com.base.utils.Constants;
+import com.base.utils.CoreMap;
 import com.common.dao.KVDao;
 
 @SuppressWarnings("unchecked")

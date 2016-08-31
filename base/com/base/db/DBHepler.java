@@ -1,20 +1,14 @@
 package com.base.db;
 
-import java.io.Serializable;
-import java.math.BigInteger;
 import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.dbutils.QueryRunner;
-import org.apache.commons.dbutils.handlers.ColumnListHandler;
 import org.apache.commons.dbutils.handlers.MapHandler;
 import org.apache.commons.dbutils.handlers.MapListHandler;
 
-import com.base.cache.CacheManager;
 import com.base.utils.CoreMap;
 
 @SuppressWarnings({ "unchecked", "rawtypes", "unused" })
@@ -57,14 +51,14 @@ public class DBHepler {
 		}
 	}
 
-	public static CoreMap querySingleCache(String name, String key, String sql, Object... params) throws Exception {
-		CoreMap out = (CoreMap) CacheManager.get(name, key);
-		if (out == null) {
-			out = querySingle(sql, params);
-			CacheManager.set(name, key, (Serializable) out);
-		}
-		return out;
-	}
+//	public static CoreMap querySingleCache(String name, String key, String sql, Object... params) throws Exception {
+//		CoreMap out = (CoreMap) CacheManager.get(name, key);
+//		if (out == null) {
+//			out = querySingle(sql, params);
+//			CacheManager.set(name, key, (Serializable) out);
+//		}
+//		return out;
+//	}
 
 	public static List<CoreMap> queryList(String sql, Object... params)
 			throws Exception {
@@ -80,14 +74,14 @@ public class DBHepler {
 		}
 	}
 
-	public static List<CoreMap> queryListCache(String name, String key, String sql, Object... params) throws Exception {
-		List<CoreMap> list = (List<CoreMap>) CacheManager.get(name, key);
-		if (list == null) {
-			list = queryList(sql, params);
-			CacheManager.set(name, key, (Serializable) list);
-		}
-		return list;
-	}
+//	public static List<CoreMap> queryListCache(String name, String key, String sql, Object... params) throws Exception {
+//		List<CoreMap> list = (List<CoreMap>) CacheManager.get(name, key);
+//		if (list == null) {
+//			list = queryList(sql, params);
+//			CacheManager.set(name, key, (Serializable) list);
+//		}
+//		return list;
+//	}
 
 	public static long stat(String sql, Object... params) throws Exception {
 		CoreMap result = querySingle(sql, params);
@@ -98,14 +92,14 @@ public class DBHepler {
 		}
 	}
 
-	public static long statCache(String name, String key, String sql, Object... params) throws Exception {
-		Long out = (Long) CacheManager.get(name, key);
-		if (out == null) {
-			out = stat(sql, params);
-			CacheManager.set(name, key, (Serializable) out);
-		}
-		return out;
-	}
+//	public static long statCache(String name, String key, String sql, Object... params) throws Exception {
+//		Long out = (Long) CacheManager.get(name, key);
+//		if (out == null) {
+//			out = stat(sql, params);
+//			CacheManager.set(name, key, (Serializable) out);
+//		}
+//		return out;
+//	}
 
 	public static String getSequence(String name) throws Exception {
 		CoreMap result = querySingle("select get_sequence('" + name + "') as primary_id");
@@ -141,7 +135,8 @@ public class DBHepler {
 
 	public static CoreMap queryOptions(String name, String userId)
 			throws Exception {
-		CoreMap out = (CoreMap) CacheManager.get("SysOptions", "user_id_" + userId);
+		CoreMap out = null;
+//		CoreMap out = (CoreMap) CacheManager.get("SysOptions", "user_id_" + userId);
 		List<Object> list = new ArrayList<Object>();
 		if (out == null) {
 			String sql = "select * from sys_options where 1 = 1";
@@ -156,8 +151,7 @@ public class DBHepler {
 			Object[] params = list.toArray();
 			List<CoreMap> result = queryList(sql, params);
 			out = optionsListToMap(result);
-			CacheManager.set("SysOptions", "user_id_" + userId,
-					(Serializable) out);
+//			CacheManager.set("SysOptions", "user_id_" + userId, (Serializable) out);
 		}
 		return out;
 	}

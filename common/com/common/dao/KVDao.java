@@ -1,18 +1,14 @@
 package com.common.dao;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.alibaba.druid.stat.TableStat.Name;
-import com.base.cache.CacheManager;
 import com.base.dao.CoreDao;
 import com.base.db.DBHepler;
 import com.base.db.DBQuery;
 import com.base.utils.CoreMap;
-import com.base.utils.DateUtils;
 
 @SuppressWarnings("unused")
 public class KVDao extends CoreDao {
@@ -44,7 +40,7 @@ public class KVDao extends CoreDao {
     public int updateMap(CoreMap map, String type, String user_id) throws Exception {
     	int result = 0;
     	if(map != null){
-			CacheManager.remove("kv_" + type, "user_id_" + user_id);
+//			CacheManager.remove("kv_" + type, "user_id_" + user_id);
     		for (Object key : map.keySet()) {
     			String name = key.toString();
     			String value = map.getString(name);
@@ -93,7 +89,8 @@ public class KVDao extends CoreDao {
      * @throws Exception
      */
     public CoreMap queryKV(String type, String user_id) throws Exception {
-    	CoreMap out = (CoreMap) CacheManager.get("kv_" + type, "user_id_" + user_id);
+    	CoreMap out = null;
+//    	CoreMap out = (CoreMap) CacheManager.get("kv_" + type, "user_id_" + user_id);
         List<Object> list = new ArrayList<Object>();
         if(out == null){
             String sql = "select * from sys_kv where 1 = 1";
@@ -108,7 +105,7 @@ public class KVDao extends CoreDao {
             Object[] params = list.toArray();
             List<CoreMap> result = DBHepler.queryList(sql, params);
             out = optionsListToMap(result);
-            CacheManager.set("kv_" + type, "user_id_" + user_id, (Serializable) out);
+//            CacheManager.set("kv_" + type, "user_id_" + user_id, (Serializable) out);
         }
         return out;
     }
