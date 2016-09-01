@@ -24,13 +24,13 @@ public class HttpClient {
 	//读取数据超时
 	private int readTimeOut = 10000;
 	//Cookies
-	private CoreMap<String, String> cookies = new CoreMap<String, String>();
+	private CoreMap cookies = new CoreMap();
 	//传递参数
-	private CoreMap<String, String> query = new CoreMap<String, String>();
+	private CoreMap query = new CoreMap();
 	//需要在body中传递的值
-	private CoreMap<String, String> data = new CoreMap<String, String>();
+	private CoreMap data = new CoreMap();
 	//头信息参数
-	private CoreMap<String, String> header = new CoreMap<String, String>();
+	private CoreMap header = new CoreMap();
     //回执头部信息
 	private Map<String, List<String>> responseHeader;
     //回执代码
@@ -136,8 +136,8 @@ public class HttpClient {
             String queryUri = "";
             if(query != null && query.size() > 0){
             	int length = query.size(), i = 0;
-				for (Map.Entry<String, String> entry : query.entrySet()) {
-					queryUri += entry.getKey() + "=" + entry.getValue();
+				for (Map.Entry entry : query.entrySet()) {
+					queryUri += ((String) entry.getKey()) + "=" + ((String) entry.getValue());
                     i++;
                     if(i != length){
                     	queryUri += "&";
@@ -160,8 +160,8 @@ public class HttpClient {
             con.setUseCaches(false);
 
             if(header != null && header.size() > 0){
-				for (Map.Entry<String, String> entry : header.entrySet()) {
-                    con.setRequestProperty(entry.getKey(), entry.getValue());
+				for (Map.Entry entry : header.entrySet()) {
+                    con.setRequestProperty((String) entry.getKey(), (String) entry.getValue());
 				}
             }
 

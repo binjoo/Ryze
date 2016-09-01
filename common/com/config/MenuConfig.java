@@ -8,7 +8,7 @@ import com.base.utils.CoreMap;
 
 public class MenuConfig {
 	private static List<Menu> menuList = new ArrayList<Menu>();
-	private static CoreMap<String, List<Menu>> menuMap = new CoreMap<String, List<Menu>>();
+	private static CoreMap menuMap = new CoreMap();
 
 	static {
 		List<Menu> global = new ArrayList<Menu>();
@@ -54,7 +54,7 @@ public class MenuConfig {
 		return menuList;
 	}
 
-	public static CoreMap<String, List<Menu>> getMenuMap() {
+	public static CoreMap getMenuMap() {
 		return menuMap;
 	}
 }

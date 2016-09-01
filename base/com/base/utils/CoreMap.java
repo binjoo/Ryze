@@ -3,12 +3,13 @@ package com.base.utils;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 @SuppressWarnings({ "unchecked", "rawtypes", "serial" })
-public class CoreMap<K, V> extends HashMap<K, V> implements Serializable {
+public class CoreMap extends ConcurrentHashMap implements Serializable {
 	private String outType;
 	private String outRender;
 	private String callback;
@@ -52,11 +53,11 @@ public class CoreMap<K, V> extends HashMap<K, V> implements Serializable {
 		}
 	}
 
-	public V put(K key, V value) {
-		return super.put(key, value);
+	public void put(String key, Object value) {
+		super.put(key, value);
 	}
 
-	public V get(Object key) {
+	public Object get(String key) {
 		return super.get(key);
 	}
 
@@ -159,5 +160,9 @@ public class CoreMap<K, V> extends HashMap<K, V> implements Serializable {
 	public CoreMap RenderJson() {
 		this.setOutType(Constants.OUT_TYPE__JSON);
 		return this;
+	}
+
+	public Set<Map.Entry> entrySet() {
+		return super.entrySet();
 	}
 }
