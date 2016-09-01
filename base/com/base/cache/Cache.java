@@ -1,54 +1,70 @@
 package com.base.cache;
 
-import java.util.List;
-
-import com.base.exception.CacheException;
-
 public interface Cache {
+	/**
+	 * 缓存数量
+	 * 
+	 * @return
+	 */
+	public int size() throws Exception;
 
-    /**
-     * Get an item from the cache, nontransactionally
-     * 
-     * @param key
-     * @return the cached object or <tt>null</tt>
-     * @throws CacheException
-     */
-    public Object get(Object key) throws CacheException;
+	/**
+	 * 缓存有效时间
+	 * 
+	 * @return
+	 */
+	public long expire() throws Exception;
 
-    /**
-     * Add an item to the cache, nontransactionally, with failfast semantics
-     * 
-     * @param key
-     * @param value
-     * @throws CacheException
-     */
-    public void put(Object key, Object value) throws CacheException;
+	/**
+	 * 添加缓存，默认时间
+	 * 
+	 * @param key
+	 * @param value
+	 */
+	public void put(String key, Object value) throws Exception;
 
-    /**
-     * Add an item to the cache
-     * 
-     * @param key
-     * @param value
-     * @throws CacheException
-     */
-    public void update(Object key, Object value) throws CacheException;
+	/**
+	 * 添加缓存，自定义时间
+	 * 
+	 * @param key
+	 * @param value
+	 * @param expire
+	 */
+	public void put(String key, Object value, long expire) throws Exception;
 
-    @SuppressWarnings("rawtypes")
-    public List keys() throws CacheException;
+	/**
+	 * 获得缓存
+	 * 
+	 * @param key
+	 * @return
+	 */
+	public Object get(String key) throws Exception;
 
-    /**
-     * Remove an item from the cache
-     */
-    public void remove(Object key) throws CacheException;
+	/**
+	 * 移除缓存
+	 * 
+	 * @param key
+	 */
+	public void remove(String key) throws Exception;
 
-    /**
-     * Clear the cache
-     */
-    public void clear() throws CacheException;
+	/**
+	 * 清空缓存
+	 */
+	public void clear() throws Exception;
 
-    /**
-     * Clean up
-     */
-    public void destroy() throws CacheException;
+	/**
+	 * 判断缓存是否存在
+	 * 
+	 * @param key
+	 * @return
+	 */
+	public boolean isExist(String key) throws Exception;
 
+	/**
+	 * 判断缓存是否为空
+	 * 
+	 * @param key
+	 * @return
+	 */
+	public boolean isEmpty(String key) throws Exception;
 }
