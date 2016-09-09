@@ -76,7 +76,7 @@ public class DBQuery {
 		this.rows = new CoreMap();
 		this.primary = "id";
 	}
-	
+
 	public String getTable() {
 		return this.table;
 	}
@@ -92,7 +92,8 @@ public class DBQuery {
 			Object param = params[i];
 			if (param instanceof String[]) {
 				String[] as = (String[]) param;
-				fields = (String[]) ArrayUtils.add(fields, as[0] + " as " + as[1]);
+				fields = (String[]) ArrayUtils.add(fields, as[0] + " as "
+						+ as[1]);
 			} else if (param instanceof String) {
 				String field = (String) param;
 				fields = (String[]) ArrayUtils.add(fields, field);
@@ -225,7 +226,7 @@ public class DBQuery {
 		}
 		return this;
 	}
-	
+
 	public DBQuery rows(CoreMap rows) {
 		this.rows.putAll(rows);
 		return this;
@@ -248,10 +249,10 @@ public class DBQuery {
 		out.append(this.table);
 		Object[] k = new String[0];
 		Object[] v = new String[0];
-		if(!rows.containsKey("created")){
+		if (!rows.containsKey("created")) {
 			this.rows("created", DateUtils.getTimeToString());
 		}
-		if(!rows.containsKey("updated")){
+		if (!rows.containsKey("updated")) {
 			this.rows("updated", DateUtils.getTimeToString());
 		}
 		Iterator it = rows.entrySet().iterator();
@@ -301,7 +302,7 @@ public class DBQuery {
 	private String buildUpdate() {
 		StringBuffer out = new StringBuffer("update ");
 		Object[] set = new String[0];
-		if(!rows.containsKey("updated")){
+		if (!rows.containsKey("updated")) {
 			this.rows("updated", DateUtils.getTimesToString());
 		}
 		Iterator it = rows.entrySet().iterator();
@@ -310,7 +311,7 @@ public class DBQuery {
 			Object key = e.getKey();
 			Object value = e.getValue();
 			if (value == null) {
-				if(key.toString().indexOf("=") > -1){
+				if (key.toString().indexOf("=") > -1) {
 					set = ArrayUtils.add(set, key);
 				}
 				continue;
@@ -329,31 +330,15 @@ public class DBQuery {
 		}
 		return out.toString();
 	}
-
+	
 	/**
 	 * 生成数量统计SQL语句
 	 * 
 	 * @return
 	 */
 	public String buildCount() {
-		this.params = new Object[0];
-		StringBuffer out = new StringBuffer("select count(*) as stat from ( select ");
-		String _table = this.table;
-		out.append(this.fields + " from ");
-		if (this.join.size() > 0) {
-			for (int i = 0; i < this.join.size(); i++) {
-				String[] join = this.join.get(i);
-				_table += " " + join[2] + " join " + join[0] + " on " + join[1];
-			}
-		}
-		out.append(_table);
-		out.append(this.where);
-		if (this.wheres.length > 0) {
-			for (int i = 0; i < this.wheres.length; i++) {
-				this.params = ArrayUtils.add(this.params, this.wheres[i]);
-			}
-		}
-		out.append(this.group);
+		StringBuffer out = new StringBuffer(buildSelect());
+		out.insert(0, "select count(*) as stat from ( select ");
 		out.append(" ) t");
 		return out.toString();
 	}
@@ -418,10 +403,10 @@ public class DBQuery {
 		System.out.println(q.build());
 		q.select("count(*) as stat");
 		System.out.println(q.build());
-		if(q.getParams().length >= 1){
+		if (q.getParams().length >= 1) {
 			System.out.print("> `Params: `{ ");
 			for (int i = 0; i < q.params.length; i++) {
-				if(i != 0){
+				if (i != 0) {
 					System.out.print(", ");
 				}
 				Object param = q.params[i];
